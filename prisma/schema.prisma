@@ -11,7 +11,51 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String
+  id String @id @default(cuid())
+
+  email    String  @unique
+  username String  @unique
+  password String 
+
+  name     String
+  imageUrl String
+  bio      String?
+
+  posts Post[]
+  likes Like[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([username, name])
+}
+
+model Post {
+  id String @id @default(cuid())
+
+  content String
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  replies  Post[]  @relation("RepliesTo")
+  parent   Post?   @relation("RepliesTo", fields: [parentId], references: [id], onDelete: Cascade)
+  parentId String?
+
+  likes Like[] @relation("PostLikes")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Like {
+  id String @id @default(cuid())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  post   Post   @relation("PostLikes", fields: [postId], references: [id], onDelete: Cascade)
+  postId String
+
+  @@index([userId, postId])
 }
