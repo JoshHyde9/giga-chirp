@@ -1,18 +1,20 @@
-import NextAuth, { User } from "next-auth";
+import NextAuth, { AuthError } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { verify } from "argon2";
 
 import { db } from "./lib/db";
 import { signInSchema } from "./lib/schema";
-import { ZodError } from "zod";
+export class InvalidLoginError extends AuthError {
+  code = "invalid_credentials";
+  errorMessage: string;
+  constructor(message?: any, errorOptions?: any) {
+    super(message, errorOptions);
+    this.errorMessage = message;
+  }
+}
 
-export const {
-  handlers: { GET, POST },
-  auth,
-  signIn,
-  signOut,
-} = NextAuth({
+export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(db),
   session: {
     strategy: "jwt",
@@ -36,23 +38,20 @@ export const {
               ],
             },
           });
-          console.log(user);
-          
 
-          if (!user) {
-            throw new Error("Invalid credentials");
-          }
+          if (!user) throw new InvalidLoginError("invalid_credentials");
 
           const isValidPassword = await verify(user.password, creds.password);
 
-          if (!isValidPassword) {
-            throw new Error("Invalid credentials");
-          }
+          if (!isValidPassword)
+            throw new InvalidLoginError("invalid_credentials");
 
-          return { id: user.id, username: user.username } as User;
+          return user;
         } catch (error) {
           console.log(error);
-          return null;
+          
+          
+          throw new InvalidLoginError("invalid_credentials");
         }
       },
     }),

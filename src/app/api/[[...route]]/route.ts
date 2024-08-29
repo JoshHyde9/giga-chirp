@@ -20,7 +20,7 @@ const app = new Elysia({ prefix: "/api" })
 
           const hashedPassword = await hash(body.password);
 
-          const newUser = await db.user.create({
+          await db.user.create({
             data: {
               email: body.email,
               imageUrl: body.imageUrl,
@@ -28,16 +28,11 @@ const app = new Elysia({ prefix: "/api" })
               name: body.name,
               username: body.username,
               bio: body.bio,
-            },
-            select: {
-              username: true,
-              password: true,
-            },
+            }
           });
 
           return {
-            usernameOrEmail: newUser.username,
-            password: newUser.password,
+            success: true,
           };
         },
         {

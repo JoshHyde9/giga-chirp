@@ -51,8 +51,8 @@ export default function Register() {
     onError: (error) => {
       console.log(error);
     },
-    onSuccess: async (data) => {
-      authenticate({
+    onSuccess: async () => {
+      await authenticate({
         usernameOrEmail: form.getValues("username"),
         password: form.getValues("password"),
       });
