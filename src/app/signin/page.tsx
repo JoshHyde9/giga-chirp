@@ -34,11 +34,6 @@ export default function Register() {
     if (result?.error) {
       return Promise.reject(new Error("Invalid credentials"));
     }
-
-    if (result?.success) {
-      console.log("HERE");
-      
-    }
   };
 
   const form = useForm<z.infer<typeof signInSchema>>({
