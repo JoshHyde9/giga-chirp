@@ -22,10 +22,13 @@ import { Button } from "@/components/ui/button";
 
 import { registerSchema } from "@/lib/schema";
 import { authenticate } from "@/lib/action";
+import { useState } from "react";
 
 export const { api } = treaty<App>("localhost:3000");
 
 export default function Register() {
+  const [globalError, setGlobalError] = useState("");
+  
   const registerUser = async (values: z.infer<typeof registerSchema>) => {
     try {
       const { data, error } = await api.user.register.post(values);
@@ -48,8 +51,8 @@ export default function Register() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: registerUser,
-    onError: (error) => {
-      console.log(error);
+    onError: (err) => {
+     setGlobalError("User already exists")
     },
     onSuccess: async () => {
       await authenticate({
@@ -180,7 +183,16 @@ export default function Register() {
               </FormItem>
             )}
           />
-          <Button type="submit" className="mt-5">
+
+          <p
+            className={`${
+              globalError ? "block" : "invisible"
+            } h-4 mt-2 text-red-500`}
+          >
+            {globalError}
+          </p>
+
+          <Button type="submit" disabled={isPending} className="mt-4 w-full">
             Register
           </Button>
         </form>

@@ -106,7 +106,7 @@ export default function Register() {
               {globalError}
             </p>
 
-            <Button type="submit" disabled={isPending} className="mt-6 w-full">
+            <Button type="submit" disabled={isPending} className="mt-4 w-full">
               Login
             </Button>
           </form>

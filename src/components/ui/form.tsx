@@ -150,7 +150,7 @@ const FormMessage = React.forwardRef<
   const body = error ? String(error?.message) : children
 
   if (!body) {
-    return null
+    return <p ref={ref} id={formMessageId} className={cn("invisible h-4", className)}></p>
   }
 
   return (
