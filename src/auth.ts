@@ -1,4 +1,4 @@
-import NextAuth, { AuthError } from "next-auth";
+import NextAuth, { AuthError, DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { verify } from "argon2";
@@ -46,14 +46,50 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           if (!isValidPassword)
             throw new InvalidLoginError("invalid_credentials");
 
-          return user;
+          return { id: user.id, email: user.email, image_url: user.imageUrl };
         } catch (error) {
           console.log(error);
-          
-          
+
           throw new InvalidLoginError("invalid_credentials");
         }
       },
     }),
   ],
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) {
+        // @ts-ignore yeet
+        token.id = user.id;
+        token.image_url = user.image_url;
+        token.email = user.email;
+      }
+
+      return token;
+    },
+    session({ session, token }) {
+      session.user.id = token.id;
+      session.user.image_url = token.image_url;
+      return session;
+    },
+  },
 });
+
+declare module "next-auth" {
+
+  interface User {
+    image_url: string;
+  }
+  interface Session {
+    user: {
+      id: string;
+      image_url: string;
+    } & DefaultSession["user"];
+  }
+}
+
+declare module "@auth/core/jwt" {
+  interface JWT {
+    id: string;
+    image_url: string;
+  }
+}
