@@ -1,13 +1,12 @@
 "use client";
 
-import type { App } from "@/app/api/[[...route]]/route";
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { treaty } from "@elysiajs/eden";
 import { z } from "zod";
+
+import { api } from "@/server/treaty";
 
 import {
   Form,
@@ -23,8 +22,6 @@ import { Button } from "@/components/ui/button";
 
 import { registerSchema } from "@/lib/schema";
 import { authenticate } from "@/lib/action";
-
-export const { api } = treaty<App>("localhost:3000");
 
 export default function Register() {
   const [globalError, setGlobalError] = useState("");

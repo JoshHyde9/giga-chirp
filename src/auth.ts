@@ -3,7 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { verify } from "argon2";
 
-import { db } from "./lib/db";
+import { db } from "./server/db";
 import { signInSchema } from "./lib/schema";
 export class InvalidLoginError extends AuthError {
   code = "invalid_credentials";
