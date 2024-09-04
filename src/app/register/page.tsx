@@ -52,7 +52,7 @@ export default function Register() {
   const { mutate, isPending } = useMutation({
     mutationFn: registerUser,
     onError: (err) => {
-     setGlobalError("User already exists")
+     setGlobalError(err.message)
     },
     onSuccess: async () => {
       await authenticate({

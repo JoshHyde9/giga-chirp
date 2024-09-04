@@ -8,15 +8,19 @@ const app = new Elysia({ prefix: "/api" })
     app
       .post(
         "/register",
-        async ({ body }) => {
+        async ({ body, error }) => {
           // Check if user already exists
           const userAlreadyExists = await db.user.findFirst({
             where: { OR: [{ username: body.username }, { email: body.email }] },
           });
 
           if (userAlreadyExists) {
-            throw new Error("User already exists");
+            return error("Bad Request", "User already exists");
           }
+
+          if (body.password !== body.confirmPassword) {
+            return error("Bad Request", "Passwords do not match");
+          } 
 
           const hashedPassword = await hash(body.password);
 
