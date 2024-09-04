@@ -22,10 +22,10 @@ import { Separator } from "../ui/separator";
 import Image from "next/image";
 
 type CreatePostProps = {
-    image_url: string
-}
+  imageUrl: string;
+};
 
-export const CreatePost: React.FC<CreatePostProps> = ({image_url}) => {
+export const CreatePost: React.FC<CreatePostProps> = ({ imageUrl }) => {
   const form = useForm<z.infer<typeof createPostSchema>>({
     resolver: zodResolver(createPostSchema),
     defaultValues: {
@@ -59,7 +59,13 @@ export const CreatePost: React.FC<CreatePostProps> = ({image_url}) => {
   return (
     <div className="flex justify-center gap-x-4 py-4 w-full">
       <div className="w-10 h-10 relative">
-        <Image src={image_url} fill sizes="5vw" className="object-cover" alt="yeet" />
+        <Image
+          src={imageUrl}
+          fill
+          sizes="5vw"
+          className="object-cover"
+          alt="yeet"
+        />
       </div>
       <div className="w-full">
         <Form {...form}>

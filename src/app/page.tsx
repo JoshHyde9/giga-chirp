@@ -21,11 +21,12 @@ export default async function Home() {
       {session && <SignOut />}
 
       <div className="mx-auto flex flex-col justify-center w-full lg:w-1/2">
-        {session && <CreatePost image_url={session.user.image_url} />}
+        {session && <CreatePost imageUrl={session.user.image_url} />}
 
-       {posts && posts.map((post: PostWithAuthor) => (
-        <PostCard key={post.id} post={post} />
-       ))}
+        {posts &&
+          posts.map((post: PostWithAuthor) => (
+            <PostCard key={post.id} post={post} />
+          ))}
       </div>
     </div>
   );
