@@ -1,6 +1,8 @@
+import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { hash } from "argon2";
 import { Elysia, t } from "elysia";
+import { useAuth } from "./middleware/auth";
 
 const app = new Elysia({ prefix: "/api" })
   .get("/hello", () => "Hello from Elysia")
@@ -20,7 +22,7 @@ const app = new Elysia({ prefix: "/api" })
 
           if (body.password !== body.confirmPassword) {
             return error("Bad Request", "Passwords do not match");
-          } 
+          }
 
           const hashedPassword = await hash(body.password);
 
@@ -32,7 +34,7 @@ const app = new Elysia({ prefix: "/api" })
               name: body.name,
               username: body.username,
               bio: body.bio,
-            }
+            },
           });
 
           return {
@@ -54,8 +56,9 @@ const app = new Elysia({ prefix: "/api" })
           }),
         }
       )
-      .get("/allUsers", async () => {
-        return await db.user.findMany();
+      .use(useAuth)
+      .get("/me", async ({ session }) => {
+        return session;
       })
   );
 
