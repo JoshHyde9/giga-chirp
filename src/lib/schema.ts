@@ -26,3 +26,7 @@ export const registerSchema = z
     message: "Passwords don't match.",
     path: ["confirmPassword"],
   });
+
+export const createPostSchema = z.object({
+  content: z.string().min(1, "Required")
+})
