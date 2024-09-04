@@ -1,7 +1,7 @@
 import { Elysia, t } from "elysia";
 import { hash } from "argon2";
 
-import { db } from "@/lib/db";
+import { db } from "@/server/db";
 import { useAuth } from "../middleware/auth";
 
 export const userRouter = new Elysia({ prefix: "/users" })
