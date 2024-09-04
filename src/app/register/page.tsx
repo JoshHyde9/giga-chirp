@@ -2,6 +2,7 @@
 
 import type { App } from "@/app/api/[[...route]]/route";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -22,7 +23,6 @@ import { Button } from "@/components/ui/button";
 
 import { registerSchema } from "@/lib/schema";
 import { authenticate } from "@/lib/action";
-import { useState } from "react";
 
 export const { api } = treaty<App>("localhost:3000");
 
@@ -31,7 +31,7 @@ export default function Register() {
   
   const registerUser = async (values: z.infer<typeof registerSchema>) => {
     try {
-      const { data, error } = await api.user.register.post(values);
+      const { data, error } = await api.users.register.post(values);
 
       if (error) throw error;
 
@@ -44,7 +44,7 @@ export default function Register() {
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      name: "",
+      username: "",
       email: "",
     },
   });
