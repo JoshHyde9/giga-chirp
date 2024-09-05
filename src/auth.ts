@@ -46,7 +46,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           if (!isValidPassword)
             throw new InvalidLoginError("invalid_credentials");
 
-          return { id: user.id, email: user.email, image_url: user.imageUrl };
+          return { id: user.id, image_url: user.imageUrl, name: user.name, username: user.username };
         } catch (error) {
           console.log(error);
 
@@ -61,13 +61,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         // @ts-ignore yeet
         token.id = user.id;
         token.image_url = user.image_url;
-        token.email = user.email;
+        token.name = user.name;
+        token.username = user.username;
       }
 
       return token;
     },
     session({ session, token }) {
       session.user.id = token.id;
+      session.user.username = token.username;
+        // @ts-ignore yeet
+      session.user.name = token.name;
       session.user.image_url = token.image_url;
       return session;
     },
@@ -78,11 +82,14 @@ declare module "next-auth" {
 
   interface User {
     image_url: string;
+    username: string;
   }
   interface Session {
     user: {
       id: string;
       image_url: string;
+      name: string;
+      username: string;
     } & DefaultSession["user"];
   }
 }
@@ -90,6 +97,7 @@ declare module "next-auth" {
 declare module "@auth/core/jwt" {
   interface JWT {
     id: string;
+    username: string;
     image_url: string;
   }
 }
