@@ -18,7 +18,7 @@ export async function authenticate(formData: {
     });
   } catch (error: any) {
     if (isRedirectError(error)) {
-      return redirect("/");
+      return redirect("/home");
     }
 
     if (error.code === "invalid_credentials") {
