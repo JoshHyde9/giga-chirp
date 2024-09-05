@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Image as LucideImage } from "lucide-react";
 
 import { createPostSchema } from "@/lib/schema";
 
@@ -18,14 +19,15 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Separator } from "../ui/separator";
-import Image from "next/image";
+import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type CreatePostProps = {
   imageUrl: string;
+  username: string;
 };
 
-export const CreatePost: React.FC<CreatePostProps> = ({ imageUrl }) => {
+export const CreatePost: React.FC<CreatePostProps> = ({ imageUrl, username }) => {
   const form = useForm<z.infer<typeof createPostSchema>>({
     resolver: zodResolver(createPostSchema),
     defaultValues: {
@@ -57,15 +59,12 @@ export const CreatePost: React.FC<CreatePostProps> = ({ imageUrl }) => {
   };
 
   return (
-    <div className="flex justify-center gap-x-4 py-4 w-full">
+    <div className="flex justify-center gap-x-4 py-4 px-2 w-full">
       <div className="w-10 h-10 relative">
-        <Image
-          src={imageUrl}
-          fill
-          sizes="5vw"
-          className="object-cover"
-          alt="yeet"
-        />
+      <Avatar>
+          <AvatarImage src={imageUrl} />
+          <AvatarFallback>{username}</AvatarFallback>
+        </Avatar>
       </div>
       <div className="w-full">
         <Form {...form}>
@@ -89,10 +88,12 @@ export const CreatePost: React.FC<CreatePostProps> = ({ imageUrl }) => {
 
             <Separator />
 
-            <div className="flex">
+            <div className="flex items-center">
+              {/* TODO: Implement image/media uploading via uploadthing */}
+            <LucideImage />
               <Button
                 type="submit"
-                disabled={isPending}
+                disabled={isPending || form.getValues("content").length === 0}
                 className="mt-4 ml-auto"
               >
                 Post

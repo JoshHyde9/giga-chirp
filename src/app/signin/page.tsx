@@ -43,7 +43,7 @@ export default function Register() {
     mutationFn: signInUser,
     onError: (err) => {
       setGlobalError(err.message);
-    },
+    }
   });
 
   const onSubmit = async (values: z.infer<typeof signInSchema>) => {
