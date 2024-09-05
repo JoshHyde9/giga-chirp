@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
+import Link from "next/link";
 
 import { api } from "@/server/treaty";
 
@@ -193,6 +194,8 @@ export default function Register() {
             <Button type="submit" disabled={isPending} className="mt-4 w-full">
               Register
             </Button>
+
+            <p className="mt-3">Already have an account? <Link href="/signin">Sign in</Link></p>
           </form>
         </Form>
       </div>
