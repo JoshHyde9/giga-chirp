@@ -42,6 +42,8 @@ export const postRouter = new Elysia({ prefix: "/posts" })
       if (!post) {
         return error("Not Found", "Post not found");
       }
+
+      return post;
     },
     {
       params: t.Object({
