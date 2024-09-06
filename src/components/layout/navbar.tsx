@@ -17,8 +17,8 @@ export const Navbar = async () => {
   const session = await auth();
 
   return (
-    <NavigationMenu className="min-h-screen h-full border-r">
-      <NavigationMenuList className="flex flex-col h-full w-64 p-2 gap-y-2">
+    <NavigationMenu className="sticky top-0 h-screen">
+      <NavigationMenuList className="flex flex-col h-full w-full py-2 gap-y-2">
         <NavigationMenuItem className="ml-2">
           <Link href="/home" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -76,7 +76,7 @@ export const Navbar = async () => {
           </>
         )}
         {!session && (
-          <NavigationMenuItem className="mt-auto w-5/6">
+          <NavigationMenuItem className="">
             <Link href="/signin" legacyBehavior passHref>
               <Button className="w-full">Sign in</Button>
             </Link>

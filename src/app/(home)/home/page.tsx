@@ -13,11 +13,10 @@ export default async function Home() {
   const { data: posts } = await api.posts.all.get();
 
   return (
-    <div className="flex flex-col w-1/2">
+    <div className="flex flex-col">
       {session && (
         <>
-        {/* TODO: Make nav section sticky */}
-          <div className="flex justify-around border-b">
+          <div className="flex justify-around sticky top-0 backdrop-blur-sm z-10 border-b">
             <div className="w-1/2 py-4 flex justify-center items-center cursor-pointer hover:bg-accent duration-300">
               <span>For you</span>
             </div>
@@ -28,7 +27,6 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* TODO: Scroll with posts */}
           <CreatePost
             username={session.user.name[0]}
             imageUrl={session.user.image_url}

@@ -58,7 +58,7 @@ export default async function Page({
 
   return (
     <main className="w-full">
-      <nav className="py-4 mb-2">
+      <nav className="py-4 mb-2 sticky top-0 backdrop-blur-sm z-10">
         <div className="flex items-center">
           <Button variant="ghost" asChild>
             <NextLink href="/home">

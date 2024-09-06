@@ -11,10 +11,14 @@ export default async function Layout({
 }>) {
   const session = await auth();
   return (
-    <main className="flex">
+    <main className="flex justify-center">
       <Navbar />
-      {children}
-      <div className="min-h-screen h-full border-l max-w-sm w-full px-6">
+      
+      <section className="w-1/2 border min-h-screen">
+        {children}
+      </section>
+
+      <div className="max-h-screen sticky h-screen top-0 w-[350px] px-6">
         <div className="flex flex-col items-center mt-2">
           <div className="relative flex items-center w-full">
             <Input placeholder="Search" className="pl-10 pr-4" />
