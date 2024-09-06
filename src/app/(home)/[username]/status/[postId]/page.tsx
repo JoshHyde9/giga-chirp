@@ -57,7 +57,7 @@ export default async function Page({
   const post: PostWithAuthor & { replies: PostWithAuthor[] } = data;
 
   return (
-    <main className="w-full px-4">
+    <main className="w-full">
       <nav className="py-4 mb-2">
         <div className="flex items-center">
           <Button variant="ghost" asChild>
@@ -70,7 +70,7 @@ export default async function Page({
       </nav>
 
       <article>
-        <div className="flex gap-x-1">
+        <div className="flex gap-x-1 px-4">
           <Avatar>
             <AvatarImage src={post.author.imageUrl} />
             <AvatarFallback>{post.author.username[0]}</AvatarFallback>
@@ -87,7 +87,7 @@ export default async function Page({
           </Button>
         </div>
 
-        <div className="my-4">
+        <div className="my-4 px-4">
           <p className="mb-4">{post.content}</p>
           <time
             dateTime={post.createdAt}
@@ -97,7 +97,7 @@ export default async function Page({
           </time>
         </div>
 
-        <div className="flex justify-between py-2 px-2 border-y">
+        <div className="flex justify-between py-2 px-4 border-y">
           <div className="flex items-center text-sm gap-x-1 duration-300 hover:text-blue-500 hover:cursor-pointer">
             <MessageCircle className="size-4" />
             <span>{post._count.replies}</span>
@@ -130,6 +130,7 @@ export default async function Page({
             username={session.user.username}
             imageUrl={session.user.image_url}
             postId={post.id}
+            authorUsername={post.author.username}
           />
         )}
 

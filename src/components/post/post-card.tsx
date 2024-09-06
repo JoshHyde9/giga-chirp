@@ -1,6 +1,13 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { Heart, Link, Mail, MessageCircle, Share } from "lucide-react";
+import {
+  Ellipsis,
+  Heart,
+  Link,
+  Mail,
+  MessageCircle,
+  Share,
+} from "lucide-react";
 import { default as NextLink } from "next/link";
 
 import { PostWithAuthor } from "@/lib/types";
@@ -19,6 +26,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "../ui/button";
 
 dayjs.extend(relativeTime);
 
@@ -29,12 +37,12 @@ type PostCardProps = {
 
 export const PostCard: React.FC<PostCardProps> = ({
   post: { id, content, createdAt, author, _count },
-  className
+  className,
 }) => {
   return (
     // TODO: Make footer buttons not route to page (also turn into actual buttons)
     <NextLink href={`/${author.username}/status/${id}`} className={className}>
-      <Card className="flex w-full p-2 shadow-none rounded-none">
+      <Card className="flex w-full py-2 px-4 shadow-none rounded-none">
         <div className="w-10 h-10 relative mt-5">
           <Avatar>
             <AvatarImage src={author.imageUrl} />
@@ -47,6 +55,10 @@ export const PostCard: React.FC<PostCardProps> = ({
             <CardDescription>
               @{author.username} <span>·</span> {dayjs(createdAt).fromNow()}
             </CardDescription>
+            {/* TODO: turn button into popover */}
+            <Button variant="ghost" className="ml-auto h-0">
+              <Ellipsis className="size-4" />
+            </Button>
           </CardHeader>
           <CardContent className="pl-2">
             <p>{content}</p>
