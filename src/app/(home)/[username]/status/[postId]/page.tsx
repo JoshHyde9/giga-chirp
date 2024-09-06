@@ -126,7 +126,7 @@ export default async function Page({
             <PostCard
               key={reply.id}
               post={reply}
-              className="border-b last-of-type:border-b first-of-type:border-t"
+              className="block border-b last-of-type:border-b"
             />
           ))}
       </article>

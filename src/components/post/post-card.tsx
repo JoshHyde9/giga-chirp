@@ -43,7 +43,7 @@ export const PostCard: React.FC<PostCardProps> = ({
         </div>
         <div className="w-full">
           <CardHeader className="flex flex-row items-center gap-x-2 pl-2 space-y-0">
-            <CardTitle className="text-xl">{author.name}</CardTitle>
+            <CardTitle className="text-md">{author.name}</CardTitle>
             <CardDescription>
               @{author.username} <span>·</span> {dayjs(createdAt).fromNow()}
             </CardDescription>
