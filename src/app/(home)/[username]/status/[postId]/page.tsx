@@ -23,6 +23,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { PostCard } from "@/components/post/post-card";
+import { auth } from "@/auth";
+import { CreateReply } from "@/components/post/create-reply";
 
 export const revalidate = 60;
 
@@ -42,6 +44,8 @@ export default async function Page({
 }: {
   params: { postId: string; username: string };
 }) {
+  const session = await auth();
+
   const { data, error } = await api.posts
     .byUsernameAndId({ username: params.username })({ postId: params.postId })
     .get();
@@ -58,7 +62,7 @@ export default async function Page({
         <div className="flex items-center">
           <Button variant="ghost" asChild>
             <NextLink href="/home">
-             <ArrowLeft />
+              <ArrowLeft />
             </NextLink>
           </Button>
           <h2 className="ml-2 text-2xl font-bold">Post</h2>
@@ -121,12 +125,20 @@ export default async function Page({
           </Popover>
         </div>
 
+        {session && (
+          <CreateReply
+            username={session.user.username}
+            imageUrl={session.user.image_url}
+            postId={post.id}
+          />
+        )}
+
         {post.replies &&
           post.replies.map((reply) => (
             <PostCard
               key={reply.id}
               post={reply}
-              className="block border-b last-of-type:border-b"
+              className="block border-b last-of-type:border-b pt-2"
             />
           ))}
       </article>

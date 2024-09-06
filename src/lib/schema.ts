@@ -30,3 +30,7 @@ export const registerSchema = z
 export const createPostSchema = z.object({
   content: z.string().min(1, "Required")
 })
+
+export const createReplySchema = createPostSchema.extend({
+  postId: z.string().cuid().min(1, "Required")
+})
