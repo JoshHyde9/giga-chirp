@@ -21,6 +21,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { LucideImage } from "lucide-react";
 
 type CreatePostProps = {
   imageUrl: string;
@@ -33,7 +34,7 @@ export const CreateReply: React.FC<CreatePostProps> = ({
   imageUrl,
   username,
   postId,
-  authorUsername
+  authorUsername,
 }) => {
   const [isReplying, setIsReplying] = useState(false);
 
@@ -78,7 +79,7 @@ export const CreateReply: React.FC<CreatePostProps> = ({
         }`}
       >
         <div className="basis-10 relative"></div>
-        <span>Replying to @{authorUsername}</span>
+        <span className="text-sm">Replying to @{authorUsername}</span>
       </div>
       <div className="flex justify-center gap-x-4">
         <div className="w-10 h-10 relative">
@@ -91,14 +92,14 @@ export const CreateReply: React.FC<CreatePostProps> = ({
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="flex gap-x-2"
+              className={`${isReplying ? "flex flex-col" : "flex gap-x-2"}`}
             >
               <FormField
                 control={form.control}
                 name="content"
                 render={({ field }) => (
                   <FormItem
-                    className="w-full"
+                    className="w-full space-y-0"
                     onClick={() => setIsReplying(true)}
                   >
                     <FormControl>
@@ -116,9 +117,23 @@ export const CreateReply: React.FC<CreatePostProps> = ({
               <Button
                 type="submit"
                 disabled={isPending || form.getValues("content").length === 0}
+                className={`${isReplying ? "hidden h-0" : "visible mt-4"}`}
               >
                 Post
               </Button>
+
+              <div className={`${isReplying ? "flex items-center visible pb-2" : "hidden"}`}>
+                {/* TODO: Somehow implement this to form */}
+                <LucideImage />
+
+                <Button
+                  type="submit"
+                  disabled={isPending || form.getValues("content").length === 0}
+                  className="ml-auto"
+                >
+                  Post
+                </Button>
+              </div>
             </form>
           </Form>
         </div>

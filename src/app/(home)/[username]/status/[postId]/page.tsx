@@ -125,6 +125,8 @@ export default async function Page({
           </Popover>
         </div>
 
+        {/* TODO: Select menu to sort replies by likes, latest etc... */}
+
         {session && (
           <CreateReply
             username={session.user.username}
