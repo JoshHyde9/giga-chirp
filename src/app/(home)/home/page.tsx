@@ -38,7 +38,7 @@ export default async function Home() {
 
       {posts &&
         posts.map((post: PostWithAuthor) => (
-          <PostCard key={post.id} post={post} />
+          <PostCard key={post.id} post={post} className="border-b last-of-type:border-b first-of-type:border-t" />
         ))}
     </div>
   );

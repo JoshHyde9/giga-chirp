@@ -13,9 +13,43 @@ export const postRouter = new Elysia({ prefix: "/posts" })
         _count: { select: { likes: true, replies: true } },
         author: { select: { username: true, imageUrl: true, name: true } },
       },
-      orderBy: {createdAt: "desc"}
+      orderBy: { createdAt: "desc" },
     });
   })
+  .get(
+    "/byUsernameAndId/:username/:postId",
+    async ({ params, error }) => {
+      const post = await db.post.findUnique({
+        where: {
+          id: params.postId,
+          author: {
+            username: params.username
+          }
+        },
+        include: {
+          author: {
+            select: {
+              username: true,
+            },
+          },
+          _count: {
+            select: { likes: true, replies: true },
+          },
+          replies: true,
+        },
+      });
+
+      if (!post) {
+        return error("Not Found", "Post not found");
+      }
+    },
+    {
+      params: t.Object({
+        postId: t.String(),
+        username: t.String(),
+      }),
+    }
+  )
   .use(useAuth)
   .post(
     "/create",
