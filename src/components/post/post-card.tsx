@@ -38,7 +38,7 @@ export const PostCard: React.FC<PostCardProps> = ({
         <div className="w-10 h-10 relative mt-5">
           <Avatar>
             <AvatarImage src={author.imageUrl} />
-            <AvatarFallback>{author.name[0]}</AvatarFallback>
+            <AvatarFallback>{author.username[0]}</AvatarFallback>
           </Avatar>
         </div>
         <div className="w-full">

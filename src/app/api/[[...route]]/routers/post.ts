@@ -6,6 +6,9 @@ import { useAuth } from "../middleware/auth";
 export const postRouter = new Elysia({ prefix: "/posts" })
   .get("/all", async () => {
     return await db.post.findMany({
+      where: {
+        parentId: null,
+      },
       select: {
         id: true,
         content: true,
@@ -23,19 +26,30 @@ export const postRouter = new Elysia({ prefix: "/posts" })
         where: {
           id: params.postId,
           author: {
-            username: params.username
-          }
+            username: params.username,
+          },
         },
         include: {
           author: {
             select: {
               username: true,
+              imageUrl: true,
+              name: true,
             },
           },
           _count: {
             select: { likes: true, replies: true },
           },
-          replies: true,
+          replies: {
+            include: {
+              author: {
+                select: { name: true, username: true, imageUrl: true }
+              },
+              _count: {
+                select: { likes: true, replies: true },
+              },
+            },
+          },
         },
       });
 
