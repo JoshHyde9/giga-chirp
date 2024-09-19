@@ -2,29 +2,17 @@ import type { PostWithAuthor } from "@/lib/types";
 import { notFound } from "next/navigation";
 import NextLink from "next/link";
 
-import {
-  ArrowLeft,
-  Ellipsis,
-  Heart,
-  Link,
-  Mail,
-  MessageCircle,
-  Share,
-} from "lucide-react";
+import { ArrowLeft, Ellipsis, Heart, MessageCircle } from "lucide-react";
 import dayjs from "dayjs";
 
+import { auth } from "@/auth";
 import { api } from "@/server/treaty";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { PostCard } from "@/components/post/post-card";
-import { auth } from "@/auth";
 import { CreateReply } from "@/components/post/create-reply";
+import { SharePopover } from "@/components/post/share-popover";
 
 export const revalidate = 60;
 
@@ -106,23 +94,10 @@ export default async function Page({
             <Heart className="size-4" />
             <span>{post._count.likes}</span>
           </div>
-          <Popover>
-            <PopoverTrigger className="py-2">
-              <Share className="size-4 duration-300 hover:text-blue-500 hover:cursor-pointer" />
-            </PopoverTrigger>
-            <PopoverContent className="cursor-pointer">
-              {/* TODO: Copy post to clipboard */}
-              <div className="flex items-center gap-x-1">
-                <Link className="size-5" />
-                <span className="font-semibold">Copy link</span>
-              </div>
-
-              <div className="flex items-center gap-x-1 mt-2">
-                <Mail className="size-5" />
-                <span className="font-semibold">Send via Direct Message</span>
-              </div>
-            </PopoverContent>
-          </Popover>
+          <SharePopover
+            authorUsername={post.author.username}
+            postId={post.id}
+          />
         </div>
 
         {/* TODO: Select menu to sort replies by likes, latest etc... */}

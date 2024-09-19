@@ -1,15 +1,6 @@
-"use client";
-
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import {
-  Ellipsis,
-  Heart,
-  Link,
-  Mail,
-  MessageCircle,
-  Share,
-} from "lucide-react";
+import { Ellipsis, Heart, MessageCircle } from "lucide-react";
 import { default as NextLink } from "next/link";
 
 import { PostWithAuthor } from "@/lib/types";
@@ -22,14 +13,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { SharePopover } from "./share-popover";
 
 dayjs.extend(relativeTime);
 
@@ -42,8 +28,6 @@ export const PostCard: React.FC<PostCardProps> = ({
   post: { id, content, createdAt, author, _count },
   className,
 }) => {
-  const [open, setOpen] = useState(false);
-
   return (
     <NextLink href={`/${author.username}/status/${id}`} className={className}>
       <Card className="flex w-full py-2 px-4 shadow-none rounded-none">
@@ -77,44 +61,7 @@ export const PostCard: React.FC<PostCardProps> = ({
               <span>{_count.likes}</span>
             </div>
             <div>
-              <Popover onOpenChange={setOpen} open={open}>
-                <PopoverTrigger
-                  className="py-2"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    e.nativeEvent.preventDefault();
-                  }}
-                >
-                  <Share className="size-4 duration-300 hover:text-blue-500 hover:cursor-pointer" />
-                </PopoverTrigger>
-                <PopoverContent className="cursor-pointer p-2">
-                  <Button
-                    className="flex items-center justify-start gap-x-1 py-2 px-4 w-full"
-                    variant="ghost"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.nativeEvent.stopPropagation();
-                      navigator.clipboard.writeText(
-                        `${window.location.host}/${author.username}/status/${id}`
-                      );
-                      setOpen(false);
-                    }}
-                  >
-                    <Link className="size-5" />
-                    <span className="font-semibold">Copy link</span>
-                  </Button>
-
-                  <Button
-                    variant="ghost"
-                    className="flex items-center justify-start gap-x-1 w-full py-2 px-4"
-                  >
-                    <Mail className="size-5" />
-                    <span className="font-semibold">
-                      Send via Direct Message
-                    </span>
-                  </Button>
-                </PopoverContent>
-              </Popover>
+              <SharePopover authorUsername={author.username} postId={id} />
             </div>
           </CardFooter>
         </div>
