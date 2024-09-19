@@ -30,6 +30,7 @@ export const FileUpload = ({ endpoint, onChange, value }: FileUploadProps) => {
 
   return (
     <UploadDropzone
+      className="ut-button:bg-primary focus-within:ut-button:ring-black ut-button:ut-readying:bg-neutral-400 ut-button:ut-uploading:bg-neutral-400 after:ut-button:ut-uploading:bg-primary"
       endpoint={endpoint}
       onClientUploadComplete={(res) => {
         onChange(res?.[0]?.url);
