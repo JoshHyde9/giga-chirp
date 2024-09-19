@@ -6,7 +6,6 @@ import { api } from "@/server/treaty";
 import { CreatePost } from "@/components/post/create-post";
 import { PostCard } from "@/components/post/post-card";
 
-
 export default async function Home() {
   const session = await auth();
 
@@ -36,7 +35,14 @@ export default async function Home() {
 
       {posts &&
         posts.map((post: PostWithAuthor) => (
-          <PostCard key={post.id} post={post} className="border-b last-of-type:border-b first-of-type:border-t" />
+          <PostCard
+            key={post.id}
+            post={post}
+            isLiked={!!post.likes.find(
+              (like) => like.userId === session?.user.id
+            )}
+            className="border-b last-of-type:border-b first-of-type:border-t"
+          />
         ))}
     </div>
   );

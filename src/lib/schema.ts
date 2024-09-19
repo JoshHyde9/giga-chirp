@@ -34,3 +34,7 @@ export const createPostSchema = z.object({
 export const createReplySchema = createPostSchema.extend({
   postId: z.string().cuid().min(1, "Required")
 })
+
+export const likePostSchema = z.object({
+  postId: z.string().cuid().min(1, "Required")
+})

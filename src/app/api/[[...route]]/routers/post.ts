@@ -13,6 +13,11 @@ export const postRouter = new Elysia({ prefix: "/posts" })
         id: true,
         content: true,
         createdAt: true,
+        likes: {
+          select: {
+            userId: true,
+          },
+        },
         _count: { select: { likes: true, replies: true } },
         author: { select: { username: true, imageUrl: true, name: true } },
       },
@@ -40,10 +45,20 @@ export const postRouter = new Elysia({ prefix: "/posts" })
           _count: {
             select: { likes: true, replies: true },
           },
+          likes: {
+            select: {
+              userId: true,
+            },
+          },
           replies: {
             include: {
               author: {
-                select: { name: true, username: true, imageUrl: true }
+                select: { name: true, username: true, imageUrl: true },
+              },
+              likes: {
+                select: {
+                  userId: true,
+                },
               },
               _count: {
                 select: { likes: true, replies: true },

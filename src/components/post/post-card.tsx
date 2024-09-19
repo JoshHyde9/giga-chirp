@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { Ellipsis, Heart, MessageCircle } from "lucide-react";
+import { Ellipsis, MessageCircle } from "lucide-react";
 import { default as NextLink } from "next/link";
 
 import { PostWithAuthor } from "@/lib/types";
@@ -15,19 +15,24 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { SharePopover } from "./share-popover";
+
+import { SharePopover } from "@/components/post/share-popover";
+import { LikePost } from "@/components/post/like-post";
 
 dayjs.extend(relativeTime);
 
 type PostCardProps = {
   post: PostWithAuthor;
   className: string;
+  isLiked: boolean;
 };
 
 export const PostCard: React.FC<PostCardProps> = ({
   post: { id, content, createdAt, author, _count },
+  isLiked,
   className,
 }) => {
+
   return (
     <NextLink href={`/${author.username}/status/${id}`} className={className}>
       <Card className="flex w-full py-2 px-4 shadow-none rounded-none">
@@ -56,10 +61,7 @@ export const PostCard: React.FC<PostCardProps> = ({
               <MessageCircle className="size-4" />
               <span>{_count.replies}</span>
             </div>
-            <div className="flex items-center text-sm gap-x-1 duration-300 hover:text-red-500 hover:cursor-pointer">
-              <Heart className="size-4" />
-              <span>{_count.likes}</span>
-            </div>
+            <LikePost isLiked={isLiked} postId={id} likeCount={_count.likes} />
             <div>
               <SharePopover authorUsername={author.username} postId={id} />
             </div>

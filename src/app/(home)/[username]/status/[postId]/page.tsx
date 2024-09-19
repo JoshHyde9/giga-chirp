@@ -2,17 +2,20 @@ import type { PostWithAuthor } from "@/lib/types";
 import { notFound } from "next/navigation";
 import NextLink from "next/link";
 
-import { ArrowLeft, Ellipsis, Heart, MessageCircle } from "lucide-react";
+import { ArrowLeft, Ellipsis, MessageCircle } from "lucide-react";
 import dayjs from "dayjs";
 
 import { auth } from "@/auth";
 import { api } from "@/server/treaty";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { PostCard } from "@/components/post/post-card";
 import { CreateReply } from "@/components/post/create-reply";
 import { SharePopover } from "@/components/post/share-popover";
+import { LikePost } from "@/components/post/like-post";
+
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 
 export const revalidate = 60;
 
@@ -43,7 +46,7 @@ export default async function Page({
   }
 
   const post: PostWithAuthor & { replies: PostWithAuthor[] } = data;
-
+  
   return (
     <main className="w-full">
       <nav className="py-4 mb-2 sticky top-0 backdrop-blur-sm z-10">
@@ -90,10 +93,7 @@ export default async function Page({
             <MessageCircle className="size-4" />
             <span>{post._count.replies}</span>
           </div>
-          <div className="flex items-center text-sm gap-x-1 duration-300 hover:text-red-500 hover:cursor-pointer">
-            <Heart className="size-4" />
-            <span>{post._count.likes}</span>
-          </div>
+         <LikePost isLiked={!!post.likes.find((like) => like.userId === session?.user.id)} likeCount={post._count.likes} postId={post.id} />
           <SharePopover
             authorUsername={post.author.username}
             postId={post.id}
@@ -116,6 +116,9 @@ export default async function Page({
             <PostCard
               key={reply.id}
               post={reply}
+              isLiked={
+               !!reply.likes.find((reply) => reply.userId === session?.user.id)
+              }
               className="block border-b last-of-type:border-b pt-2"
             />
           ))}
