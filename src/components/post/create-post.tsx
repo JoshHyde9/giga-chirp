@@ -35,6 +35,7 @@ import { FileUpload } from "../file-upload";
 import { useState } from "react";
 import { Input } from "../ui/input";
 import Image from "next/image";
+import { revalidatePage } from "@/lib/revalidatePath";
 
 type CreatePostProps = {
   imageUrl: string;
@@ -68,6 +69,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({
     },
     onSuccess: () => {
       form.reset();
+      revalidatePage();
     },
   });
 
