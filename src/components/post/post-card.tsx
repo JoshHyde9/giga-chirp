@@ -1,3 +1,5 @@
+"use client";
+
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {
@@ -26,7 +28,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 dayjs.extend(relativeTime);
 
@@ -39,8 +42,9 @@ export const PostCard: React.FC<PostCardProps> = ({
   post: { id, content, createdAt, author, _count },
   className,
 }) => {
+  const [open, setOpen] = useState(false);
+
   return (
-    // TODO: Make footer buttons not route to page (also turn into actual buttons)
     <NextLink href={`/${author.username}/status/${id}`} className={className}>
       <Card className="flex w-full py-2 px-4 shadow-none rounded-none">
         <div className="w-10 h-10 relative mt-5">
@@ -73,23 +77,42 @@ export const PostCard: React.FC<PostCardProps> = ({
               <span>{_count.likes}</span>
             </div>
             <div>
-              <Popover>
-                <PopoverTrigger className="py-2">
+              <Popover onOpenChange={setOpen} open={open}>
+                <PopoverTrigger
+                  className="py-2"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.nativeEvent.preventDefault();
+                  }}
+                >
                   <Share className="size-4 duration-300 hover:text-blue-500 hover:cursor-pointer" />
                 </PopoverTrigger>
-                <PopoverContent className="cursor-pointer">
-                  {/* TODO: Copy post to clipboard */}
-                  <div className="flex items-center gap-x-1">
+                <PopoverContent className="cursor-pointer p-2">
+                  <Button
+                    className="flex items-center justify-start gap-x-1 py-2 px-4 w-full"
+                    variant="ghost"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.nativeEvent.stopPropagation();
+                      navigator.clipboard.writeText(
+                        `${window.location.host}/${author.username}/status/${id}`
+                      );
+                      setOpen(false);
+                    }}
+                  >
                     <Link className="size-5" />
                     <span className="font-semibold">Copy link</span>
-                  </div>
+                  </Button>
 
-                  <div className="flex items-center gap-x-1 mt-2">
+                  <Button
+                    variant="ghost"
+                    className="flex items-center justify-start gap-x-1 w-full py-2 px-4"
+                  >
                     <Mail className="size-5" />
                     <span className="font-semibold">
                       Send via Direct Message
                     </span>
-                  </div>
+                  </Button>
                 </PopoverContent>
               </Popover>
             </div>
