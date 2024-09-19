@@ -28,7 +28,8 @@ export const registerSchema = z
   });
 
 export const createPostSchema = z.object({
-  content: z.string().min(1, "Required")
+  content: z.string().min(1, "Required"),
+  mediaUrl: z.string().optional()
 })
 
 export const createReplySchema = createPostSchema.extend({

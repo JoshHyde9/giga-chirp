@@ -21,17 +21,35 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UploadDropzone } from "@/utils/uploadthing";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import { FileUpload } from "../file-upload";
+import { useState } from "react";
+import { Input } from "../ui/input";
+import Image from "next/image";
 
 type CreatePostProps = {
   imageUrl: string;
   username: string;
 };
 
-export const CreatePost: React.FC<CreatePostProps> = ({ imageUrl, username }) => {
+export const CreatePost: React.FC<CreatePostProps> = ({
+  imageUrl,
+  username,
+}) => {
   const form = useForm<z.infer<typeof createPostSchema>>({
     resolver: zodResolver(createPostSchema),
     defaultValues: {
       content: "",
+      mediaUrl: "",
     },
   });
 
@@ -61,7 +79,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ imageUrl, username }) =>
   return (
     <div className="flex justify-center gap-x-4 py-4 px-2 w-full">
       <div className="w-10 h-10 relative">
-      <Avatar>
+        <Avatar>
           <AvatarImage src={imageUrl} />
           <AvatarFallback>{username}</AvatarFallback>
         </Avatar>
@@ -86,11 +104,44 @@ export const CreatePost: React.FC<CreatePostProps> = ({ imageUrl, username }) =>
               )}
             />
 
+            {form.getValues("mediaUrl") && (
+              <div className="relative h-[516px]">
+                <Image src={form.getValues("mediaUrl")} fill className="w-full h-full" alt="media" />
+              </div>
+            )}
+
             <Separator />
 
             <div className="flex items-center">
-              {/* TODO: Implement image/media uploading via uploadthing */}
-            <LucideImage />
+              <Dialog>
+                <DialogTrigger>
+                  <LucideImage />
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Upload some media</DialogTitle>
+                    <DialogDescription>
+                      <FormField
+                        control={form.control}
+                        name="mediaUrl"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <FileUpload
+                                endpoint="postUploader"
+                                value={field.value}
+                                onChange={field.onChange}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+
               <Button
                 type="submit"
                 disabled={isPending || form.getValues("content").length === 0}

@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 
 import { SharePopover } from "@/components/post/share-popover";
 import { LikePost } from "@/components/post/like-post";
+import Image from "next/image";
 
 dayjs.extend(relativeTime);
 
@@ -28,11 +29,10 @@ type PostCardProps = {
 };
 
 export const PostCard: React.FC<PostCardProps> = ({
-  post: { id, content, createdAt, author, _count },
+  post: { id, content, createdAt, author, _count, mediaUrl },
   isLiked,
   className,
 }) => {
-
   return (
     <NextLink href={`/${author.username}/status/${id}`} className={className}>
       <Card className="flex w-full py-2 px-4 shadow-none rounded-none">
@@ -55,6 +55,12 @@ export const PostCard: React.FC<PostCardProps> = ({
           </CardHeader>
           <CardContent className="pl-2">
             <p>{content}</p>
+
+            {mediaUrl && (
+              <div className="flex justify-center relative h-[516px]">
+                <Image src={mediaUrl} alt="media" fill sizes="24rem" className="w-full h-full rounded-lg" />
+              </div>
+            )}
           </CardContent>
           <CardFooter className="flex gap-x-4 justify-between py-1">
             <div className="flex items-center text-sm gap-x-1 duration-300 hover:text-blue-500 hover:cursor-pointer">

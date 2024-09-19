@@ -13,6 +13,7 @@ export const postRouter = new Elysia({ prefix: "/posts" })
         id: true,
         content: true,
         createdAt: true,
+        mediaUrl: true,
         likes: {
           select: {
             userId: true,
@@ -89,6 +90,7 @@ export const postRouter = new Elysia({ prefix: "/posts" })
         data: {
           content: body.content,
           authorId: session.user.id,
+          mediaUrl: body.mediaUrl
         },
       });
 
@@ -97,6 +99,7 @@ export const postRouter = new Elysia({ prefix: "/posts" })
     {
       body: t.Object({
         content: t.String(),
+        mediaUrl: t.Optional(t.String()),
       }),
     }
   );
