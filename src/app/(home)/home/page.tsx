@@ -15,7 +15,7 @@ export default async function Home() {
     <div className="flex flex-col">
       {session && (
         <>
-          <div className="flex justify-around sticky top-0 backdrop-blur-sm z-10 border-b">
+          <div className="flex justify-around sticky top-0 backdrop-blur-md z-10 border-b bg-white/50">
             <div className="w-1/2 py-4 flex justify-center items-center cursor-pointer hover:bg-accent duration-300">
               <span>For you</span>
             </div>
