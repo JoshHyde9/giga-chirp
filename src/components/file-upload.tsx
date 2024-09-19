@@ -1,6 +1,6 @@
 "use client";
 
-import { FileIcon, X } from "lucide-react";
+import { X } from "lucide-react";
 import Image from "next/image";
 
 import { UploadDropzone } from "@/utils/uploadthing";
@@ -12,8 +12,6 @@ type FileUploadProps = {
 };
 
 export const FileUpload = ({ endpoint, onChange, value }: FileUploadProps) => {
-  const fileType = value.split(".").pop();
-
   if (value) {
     return (
       <div className="relative h-[516px]">

@@ -125,7 +125,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
-                    <DialogTitle>Upload some media</DialogTitle>
+                    <DialogTitle>Upload some gay sonic vore</DialogTitle>
                     <DialogDescription>
                       <FormField
                         control={form.control}
