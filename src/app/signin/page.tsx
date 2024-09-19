@@ -1,9 +1,12 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import { redirect } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { z } from "zod";
 import Link from "next/link";
 
@@ -22,6 +25,7 @@ import { signInSchema } from "@/lib/schema";
 import { authenticate } from "@/lib/action";
 
 export default function Register() {
+  const { data } = useSession();
   const [globalError, setGlobalError] = useState("");
 
   const signInUser = async (values: z.infer<typeof signInSchema>) => {
@@ -47,18 +51,22 @@ export default function Register() {
     }
   });
 
+  if (data?.user) {
+    return redirect("/home");
+  }
+
   const onSubmit = async (values: z.infer<typeof signInSchema>) => {
     const parsedData = await signInSchema.parseAsync(values);
     mutate(parsedData);
   };
 
   return (
-    <div>
-      <div className="text-center">
+    <div className="mx-auto flex flex-col justify-center items-center min-h-screen max-w-2xl py-2">
+      <div>
         <h1 className="font-bold text-3xl mb-4">Sign In</h1>
       </div>
 
-      <div className="mx-auto max-w-2xl">
+      <div className="w-full">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormField

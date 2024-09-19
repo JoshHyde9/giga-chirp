@@ -21,7 +21,7 @@ export default async function Home() {
       <div>
         <div className="my-6">
           <h1 className="text-6xl font-bold leading-loose tracking-wide">
-            Mewing now
+            Jorkin it now
           </h1>
           <h2 className="font-bold text-2xl">Join today.</h2>
         </div>

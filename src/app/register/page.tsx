@@ -23,8 +23,11 @@ import { Button } from "@/components/ui/button";
 
 import { registerSchema } from "@/lib/schema";
 import { authenticate } from "@/lib/action";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default function Register() {
+  const { data } = useSession();
   const [globalError, setGlobalError] = useState("");
 
   const registerUser = async (values: z.infer<typeof registerSchema>) => {
@@ -60,18 +63,22 @@ export default function Register() {
     },
   });
 
+  if (data?.user) {
+    return redirect("/home");
+  }
+ 
   const onSubmit = async (values: z.infer<typeof registerSchema>) => {
     const parsedData = await registerSchema.parseAsync(values);
     mutate(parsedData);
   };
 
   return (
-    <div>
+    <div className="mx-auto flex flex-col justify-center items-center min-h-screen max-w-2xl py-2">
       <div className="text-center">
         <h1 className="font-bold text-3xl mb-4">Register</h1>
       </div>
 
-      <div className="mx-auto max-w-2xl">
+      <div className="w-full">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormField

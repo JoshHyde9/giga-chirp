@@ -46,7 +46,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           if (!isValidPassword)
             throw new InvalidLoginError("invalid_credentials");
 
-          return { id: user.id, image_url: user.imageUrl, name: user.name, username: user.username };
+          return {
+            id: user.id,
+            image_url: user.imageUrl,
+            name: user.name,
+            username: user.username,
+          };
         } catch (error) {
           console.log(error);
 
@@ -70,7 +75,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     session({ session, token }) {
       session.user.id = token.id;
       session.user.username = token.username;
-        // @ts-ignore yeet
+      // @ts-ignore yeet
       session.user.name = token.name;
       session.user.image_url = token.image_url;
       return session;
@@ -79,7 +84,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 });
 
 declare module "next-auth" {
-
   interface User {
     image_url: string;
     username: string;

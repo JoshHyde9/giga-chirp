@@ -1,8 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
+import { Search } from "lucide-react";
+
 import { auth } from "@/auth";
+
 import { Navbar } from "@/components/layout/navbar";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
 
 export default async function Layout({
   children,
