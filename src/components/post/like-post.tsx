@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { Heart } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 
 import { api } from "@/server/treaty";
@@ -15,7 +16,13 @@ type LikePostProps = {
   likeCount: number;
 };
 
-export const LikePost: React.FC<LikePostProps> = ({ postId, isLiked, likeCount }) => {
+export const LikePost: React.FC<LikePostProps> = ({
+  postId,
+  isLiked,
+  likeCount,
+}) => {
+  const router = useRouter();
+
   const likePost = async (values: z.infer<typeof likePostSchema>) => {
     const { data, error } = await api.likes.create.post(values);
 
@@ -27,11 +34,11 @@ export const LikePost: React.FC<LikePostProps> = ({ postId, isLiked, likeCount }
   const { mutate } = useMutation({
     mutationFn: likePost,
     onError: (err) => {
-      console.log(err);
+      router.replace("/signin");
     },
     onSuccess: () => {
-        revalidatePage();
-    }
+      revalidatePage();
+    },
   });
 
   const onSubmit = async (values: z.infer<typeof likePostSchema>) => {
@@ -48,10 +55,10 @@ export const LikePost: React.FC<LikePostProps> = ({ postId, isLiked, likeCount }
         onSubmit({ postId });
       }}
     >
-      <Heart className={`${isLiked ? "stroke-red-500 fill-red-500" : ""} size-4`} />
-      <span className={`${isLiked ? "text-red-500" : ""}`}>
-        {likeCount}
-      </span>
+      <Heart
+        className={`${isLiked ? "stroke-red-500 fill-red-500" : ""} size-4`}
+      />
+      <span className={`${isLiked ? "text-red-500" : ""}`}>{likeCount}</span>
     </div>
   );
 };
