@@ -106,7 +106,13 @@ export const CreatePost: React.FC<CreatePostProps> = ({
 
             {form.getValues("mediaUrl") && (
               <div className="relative h-[516px]">
-                <Image src={form.getValues("mediaUrl")} fill className="w-full h-full" alt="media" />
+                <Image
+                // @ts-expect-error react-hook-form does not like optional fields
+                  src={form.getValues("mediaUrl")}
+                  fill
+                  className="w-full h-full"
+                  alt="media"
+                />
               </div>
             )}
 
@@ -129,6 +135,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({
                             <FormControl>
                               <FileUpload
                                 endpoint="postUploader"
+                                // @ts-expect-error react-hook-form does not like optional fields
                                 value={field.value}
                                 onChange={field.onChange}
                               />
