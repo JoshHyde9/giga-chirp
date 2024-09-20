@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 
 import { Inter as FontSans } from "next/font/google";
 
-import {SessionProvider} from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
 
+import { auth } from "@/auth";
 import { cn } from "@/lib/utils";
 import ReactQueryProvider from "@/lib/query-client";
 
 import "./globals.css";
-import { auth } from "@/auth";
 
 const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -22,21 +22,19 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   const session = await auth();
-  
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
       <body
-        className={cn(
-          "container min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
-        )}
+        className={cn("bg-background font-sans antialiased", fontSans.variable)}
       >
-        <SessionProvider session={session}>
-          <ReactQueryProvider>{children}</ReactQueryProvider>
-        </SessionProvider>
+        <div className="container min-h-screen">
+          <SessionProvider session={session}>
+            <ReactQueryProvider>{children}</ReactQueryProvider>
+          </SessionProvider>
+        </div>
       </body>
     </html>
   );
