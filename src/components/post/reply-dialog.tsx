@@ -25,6 +25,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { CreateReply } from "@/components/post/create-reply";
 
+
 dayjs.extend(relativeTime);
 
 type ReplyDialogProps = {
@@ -95,7 +96,7 @@ export const ReplyDialog: React.FC<ReplyDialogProps> = ({ post, session }) => {
               <div className="pl-2">
                 <p>{post.content}</p>
                 {post.mediaUrl && (
-                  <div className="flex justify-center relative h-[516px]">
+                  <div className="flex justify-center relative h-[516px] mt-2">
                     <Image
                       src={post.mediaUrl}
                       alt="media"

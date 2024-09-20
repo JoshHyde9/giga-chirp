@@ -4,10 +4,12 @@ import type { Session } from "next-auth";
 import type { PostWithAuthor } from "@/lib/types";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { default as NextLink } from "next/link";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { Ellipsis } from "lucide-react";
+
+import { cn } from "@/lib/utils";
 
 import {
   Card,
@@ -18,13 +20,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 
 import { SharePopover } from "@/components/post/share-popover";
 import { LikePost } from "@/components/post/like-post";
 import { ReplyDialog } from "@/components/post/reply-dialog";
-import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+import { PostExtras } from "@/components/post/post-extras-popover";
 
 dayjs.extend(relativeTime);
 
@@ -48,7 +48,10 @@ export const PostCard: React.FC<PostCardProps> = ({
       onClick={() => router.push(`/${post.author.username}/status/${post.id}`)}
     >
       <Card className={cn("flex w-full py-2 px-4 shadow-none rounded-none")}>
-        <NextLink href={`/${post.author.username}`} onClick={(e) => e.stopPropagation()}>
+        <NextLink
+          href={`/${post.author.username}`}
+          onClick={(e) => e.stopPropagation()}
+        >
           <div className="w-10 h-10 relative">
             <Avatar>
               <AvatarImage src={post.author.imageUrl} />
@@ -58,17 +61,26 @@ export const PostCard: React.FC<PostCardProps> = ({
         </NextLink>
         <div className="w-full">
           <CardHeader className="flex flex-row">
-            <NextLink href={`/${post.author.username}`} className="flex flex-row items-center gap-x-2 pl-2" onClick={(e) => e.stopPropagation()}>
-              <CardTitle className="text-md hover:underline">{post.author.name}</CardTitle>
+            <NextLink
+              href={`/${post.author.username}`}
+              className="flex flex-row items-center gap-x-2 pl-2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <CardTitle className="text-md hover:underline">
+                {post.author.name}
+              </CardTitle>
               <CardDescription>
                 @{post.author.username} <span>·</span>{" "}
                 {dayjs(post.createdAt).fromNow()}
               </CardDescription>
             </NextLink>
-            {/* TODO: turn button into popover */}
-            <Button variant="ghost" className="ml-auto h-0">
-              <Ellipsis className="size-4" />
-            </Button>
+
+            {session && (
+              <PostExtras
+                session={session}
+                authorUsername={post.author.username}
+              />
+            )}
           </CardHeader>
           <CardContent className="pl-2">
             <p>{post.content}</p>
