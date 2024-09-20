@@ -53,6 +53,61 @@ export const userRouter = new Elysia({ prefix: "/users" })
       }),
     }
   )
+  .get(
+    "/user/:username",
+    async ({ params, error }) => {
+      const user = await db.user.findUnique({
+        where: {
+          username: params.username,
+        },
+        select: {
+          posts: {
+            where: {
+              parentId: null,
+            },
+            include: {
+              author: {
+                select: {
+                  username: true,
+                  imageUrl: true,
+                  name: true,
+                }
+              },
+              _count: {
+                select: { likes: true, replies: true },
+              },
+              likes: {
+                select: {
+                  userId: true,
+                }
+              }
+            }
+          },
+          _count: {
+            select: {
+              posts: { where: { parentId: null } },
+            },
+          },
+          bio: true,
+          imageUrl: true,
+          name: true,
+          username: true,
+          createdAt: true,
+        },
+      });
+
+      if (!user) {
+        return error("Not Found", "User does not exist.");
+      }
+
+      return user;
+    },
+    {
+      params: t.Object({
+        username: t.String(),
+      }),
+    }
+  )
   .use(useAuth)
   .get("/me", async ({ session }) => {
     return session;

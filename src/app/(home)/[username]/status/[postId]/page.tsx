@@ -116,6 +116,7 @@ export default async function Page({
             <PostCard
               key={reply.id}
               post={reply}
+              session={session}
               isLiked={
                !!reply.likes.find((reply) => reply.userId === session?.user.id)
               }
