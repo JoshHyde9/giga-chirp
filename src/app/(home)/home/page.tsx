@@ -41,7 +41,8 @@ export default async function Home() {
             isLiked={!!post.likes.find(
               (like) => like.userId === session?.user.id
             )}
-            className="border-b last-of-type:border-b first-of-type:border-t"
+            session={session}
+            className="border-b last-of-type:border-b first-of-type:border-t hover:cursor-pointer"
           />
         ))}
     </div>

@@ -32,13 +32,11 @@ export const SharePopover: React.FC<SharePopoverProps> = ({
       >
         <Share className="size-4 duration-300 hover:text-blue-500 hover:cursor-pointer" />
       </PopoverTrigger>
-      <PopoverContent className="cursor-pointer p-2">
+      <PopoverContent className="cursor-pointer p-2" onClick={(e) => e.stopPropagation()}>
         <Button
           className="flex items-center justify-start gap-x-1 py-2 px-4 w-full"
           variant="ghost"
-          onClick={(e) => {
-            e.preventDefault();
-            e.nativeEvent.stopPropagation();
+          onClick={() => {
             navigator.clipboard.writeText(
               `${window.location.host}/${authorUsername}/status/${postId}`
             );

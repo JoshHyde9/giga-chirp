@@ -52,6 +52,7 @@ export const LikePost: React.FC<LikePostProps> = ({
       onClick={(e) => {
         e.preventDefault();
         e.nativeEvent.preventDefault();
+        e.stopPropagation();
         onSubmit({ postId });
       }}
     >
