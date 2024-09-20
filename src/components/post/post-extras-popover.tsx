@@ -35,13 +35,16 @@ export const PostExtras: React.FC<PostExtrasProps> = ({
         className="cursor-pointer p-2"
         onClick={(e) => e.stopPropagation()}
       >
-        <Button
-          className="flex items-center justify-start gap-x-1 py-2 px-4 w-full"
-          variant="ghost"
-        >
-          <UserPlus />
-          <span className="font-semibold">Follow @{authorUsername}</span>
-        </Button>
+        {session?.user.username !== authorUsername && (
+          <Button
+            className="flex items-center justify-start gap-x-1 py-2 px-4 w-full"
+            variant="ghost"
+          >
+            <UserPlus />
+            <span className="font-semibold">Follow @{authorUsername}</span>
+          </Button>
+        )}
+
         {session?.user.username === authorUsername && (
           <>
             <Button
