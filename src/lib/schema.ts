@@ -13,7 +13,7 @@ export const registerSchema = z
     email: z.string().email(),
     name: z.string(),
     bio: z.string().optional(),
-    imageUrl: z.string(),
+    imageUrl: z.string().optional(),
     password: z
       .string({ required_error: "Required" })
       .min(1, "Required"),

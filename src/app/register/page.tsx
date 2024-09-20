@@ -25,6 +25,7 @@ import { registerSchema } from "@/lib/schema";
 import { authenticate } from "@/lib/action";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { FileUpload } from "@/components/file-upload";
 
 export default function Register() {
   const { data } = useSession();
@@ -66,7 +67,7 @@ export default function Register() {
   if (data?.user) {
     return redirect("/home");
   }
- 
+
   const onSubmit = async (values: z.infer<typeof registerSchema>) => {
     const parsedData = await registerSchema.parseAsync(values);
     mutate(parsedData);
@@ -91,7 +92,24 @@ export default function Register() {
                     <Input placeholder="Jim" {...field} />
                   </FormControl>
                   <FormDescription>
-                    This is your public display name.
+                    This cannot be changed
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Jim Penman" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    This is your public display name and can be changed at anytime
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -114,24 +132,10 @@ export default function Register() {
 
             <FormField
               control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
               name="bio"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Bio</FormLabel>
+                  <FormLabel>Bio (optional)</FormLabel>
                   <FormControl>
                     <Input placeholder="Yo mumma so fat" {...field} />
                   </FormControl>
@@ -145,9 +149,14 @@ export default function Register() {
               name="imageUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Image URL</FormLabel>
+                  <FormLabel>Profile Image (optional)</FormLabel>
                   <FormControl>
-                    <Input placeholder="I'll work this out later" {...field} />
+                    <FileUpload
+                      endpoint="userImage"
+                      // @ts-expect-error wtf is this react-hook-form
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -202,7 +211,9 @@ export default function Register() {
               Register
             </Button>
 
-            <p className="mt-3">Already have an account? <Link href="/signin">Sign in</Link></p>
+            <p className="mt-3">
+              Already have an account? <Link href="/signin">Sign in</Link>
+            </p>
           </form>
         </Form>
       </div>

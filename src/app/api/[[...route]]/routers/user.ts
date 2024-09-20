@@ -46,7 +46,7 @@ export const userRouter = new Elysia({ prefix: "/users" })
           error: "Please enter a valid email.",
         }),
         name: t.String({ minLength: 1, error: "Name must not be empty." }),
-        imageUrl: t.String(),
+        imageUrl: t.Optional(t.String()),
         bio: t.Optional(t.String()),
         password: t.String(),
         confirmPassword: t.String(),

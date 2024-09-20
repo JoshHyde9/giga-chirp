@@ -6,7 +6,7 @@ import Image from "next/image";
 import { UploadDropzone } from "@/utils/uploadthing";
 
 type FileUploadProps = {
-  endpoint: "postUploader";
+  endpoint: "postUploader" | "userImage";
   value: string;
   onChange: (...event: unknown[]) => void;
 };

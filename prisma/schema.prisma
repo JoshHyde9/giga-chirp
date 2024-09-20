@@ -18,7 +18,7 @@ model User {
   password String 
 
   name     String
-  imageUrl String
+  imageUrl String? @default("https://cdn-icons-png.flaticon.com/512/10412/10412528.png")
   bio      String?
 
   posts Post[]
