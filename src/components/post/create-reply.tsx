@@ -1,13 +1,16 @@
 "use client";
+import type { Dispatch, SetStateAction } from "react";
 
-import { useState } from "react";
+import {useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { LucideImage } from "lucide-react";
 import { z } from "zod";
 
 import { createReplySchema } from "@/lib/schema";
 import { revalidatePage } from "@/lib/revalidatePath";
+import { cn } from "@/lib/utils";
 
 import { api } from "@/server/treaty";
 
@@ -21,13 +24,14 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LucideImage } from "lucide-react";
 
 type CreatePostProps = {
   imageUrl: string;
   username: string;
   postId: string;
   authorUsername: string;
+  className?: string;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
 };
 
 export const CreateReply: React.FC<CreatePostProps> = ({
@@ -35,6 +39,8 @@ export const CreateReply: React.FC<CreatePostProps> = ({
   username,
   postId,
   authorUsername,
+  className,
+  setIsOpen
 }) => {
   const [isReplying, setIsReplying] = useState(false);
 
@@ -63,6 +69,10 @@ export const CreateReply: React.FC<CreatePostProps> = ({
       revalidatePage();
       form.reset();
       setIsReplying(false);
+
+      if(setIsOpen) {
+        setIsOpen(false);
+      }
     },
   });
 
@@ -72,7 +82,7 @@ export const CreateReply: React.FC<CreatePostProps> = ({
   };
 
   return (
-    <div className="flex flex-col w-full pt-4 px-2 border-b">
+    <div className={cn("flex flex-col w-full pt-4 px-2 border-b", className)}>
       <div
         className={`flex flex-row gap-x-4 mb-2 w-full text-muted-foreground ${
           isReplying ? "visible opacity-100 h-fit" : "invisible opacity-0 h-0"

@@ -1,9 +1,11 @@
+import type { PostWithAuthor } from "@/lib/types";
+
+import { auth } from "@/auth";
+import Image from "next/image";
+import { default as NextLink } from "next/link";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { Ellipsis, MessageCircle } from "lucide-react";
-import { default as NextLink } from "next/link";
-
-import { PostWithAuthor } from "@/lib/types";
+import { Ellipsis } from "lucide-react";
 
 import {
   Card,
@@ -18,7 +20,7 @@ import { Button } from "@/components/ui/button";
 
 import { SharePopover } from "@/components/post/share-popover";
 import { LikePost } from "@/components/post/like-post";
-import Image from "next/image";
+import { ReplyDialog } from "@/components/post/reply-dialog";
 
 dayjs.extend(relativeTime);
 
@@ -28,25 +30,27 @@ type PostCardProps = {
   isLiked: boolean;
 };
 
-export const PostCard: React.FC<PostCardProps> = ({
-  post: { id, content, createdAt, author, _count, mediaUrl },
+export const PostCard: React.FC<PostCardProps> = async ({
+  post,
   isLiked,
   className,
 }) => {
+  const session = await auth();
+
   return (
-    <NextLink href={`/${author.username}/status/${id}`} className={className}>
+    <NextLink href={`/${post.author.username}/status/${post.id}`} className={className}>
       <Card className="flex w-full py-2 px-4 shadow-none rounded-none">
-        <div className="w-10 h-10 relative mt-5">
+        <div className="w-10 h-10 relative">
           <Avatar>
-            <AvatarImage src={author.imageUrl} />
-            <AvatarFallback>{author.username[0]}</AvatarFallback>
+            <AvatarImage src={post.author.imageUrl} />
+            <AvatarFallback>{post.author.username[0]}</AvatarFallback>
           </Avatar>
         </div>
         <div className="w-full">
           <CardHeader className="flex flex-row items-center gap-x-2 pl-2 space-y-0">
-            <CardTitle className="text-md">{author.name}</CardTitle>
+            <CardTitle className="text-md">{post.author.name}</CardTitle>
             <CardDescription>
-              @{author.username} <span>·</span> {dayjs(createdAt).fromNow()}
+              @{post.author.username} <span>·</span> {dayjs(post.createdAt).fromNow()}
             </CardDescription>
             {/* TODO: turn button into popover */}
             <Button variant="ghost" className="ml-auto h-0">
@@ -54,22 +58,25 @@ export const PostCard: React.FC<PostCardProps> = ({
             </Button>
           </CardHeader>
           <CardContent className="pl-2">
-            <p>{content}</p>
+            <p>{post.content}</p>
 
-            {mediaUrl && (
+            {post.mediaUrl && (
               <div className="flex justify-center relative h-[516px]">
-                <Image src={mediaUrl} alt="media" fill sizes="24rem" className="w-full h-full rounded-lg" />
+                <Image
+                  src={post.mediaUrl}
+                  alt="media"
+                  fill
+                  sizes="24rem"
+                  className="w-full h-full rounded-lg"
+                />
               </div>
             )}
           </CardContent>
           <CardFooter className="flex gap-x-4 justify-between py-1">
-            <div className="flex items-center text-sm gap-x-1 duration-300 hover:text-blue-500 hover:cursor-pointer">
-              <MessageCircle className="size-4" />
-              <span>{_count.replies}</span>
-            </div>
-            <LikePost isLiked={isLiked} postId={id} likeCount={_count.likes} />
+            <ReplyDialog post={post} session={session} />
+            <LikePost isLiked={isLiked} postId={post.id} likeCount={post._count.likes} />
             <div>
-              <SharePopover authorUsername={author.username} postId={id} />
+              <SharePopover authorUsername={post.author.username} postId={post.id} />
             </div>
           </CardFooter>
         </div>
