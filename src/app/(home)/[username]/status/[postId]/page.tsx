@@ -2,6 +2,7 @@ import type { PostWithAuthor } from "@/lib/types";
 import { notFound } from "next/navigation";
 import NextLink from "next/link";
 
+import Image from "next/image";
 import { ArrowLeft, Ellipsis, MessageCircle } from "lucide-react";
 import dayjs from "dayjs";
 
@@ -80,6 +81,19 @@ export default async function Page({
 
         <div className="my-4 px-4">
           <p className="mb-4">{post.content}</p>
+
+          {post.mediaUrl && (
+              <div className="flex justify-center relative h-[516px] my-2">
+                <Image
+                  src={post.mediaUrl}
+                  alt="media"
+                  fill
+                  sizes="24rem"
+                  className="w-full h-full rounded-lg"
+                />
+              </div>
+            )}
+
           <time
             dateTime={post.createdAt}
             className="text-muted-foreground text-sm"
