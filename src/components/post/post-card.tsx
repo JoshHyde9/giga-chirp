@@ -48,17 +48,17 @@ export const PostCard: React.FC<PostCardProps> = ({
       onClick={() => router.push(`/${post.author.username}/status/${post.id}`)}
     >
       <Card className={cn("flex w-full py-2 px-4 shadow-none rounded-none")}>
-        <NextLink
-          href={`/${post.author.username}`}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="w-10 h-10 relative">
+        <div className="w-10 h-10 relative">
+          <NextLink
+            href={`/${post.author.username}`}
+            onClick={(e) => e.stopPropagation()}
+          >
             <Avatar>
               <AvatarImage src={post.author.imageUrl} />
               <AvatarFallback>{post.author.username[0]}</AvatarFallback>
             </Avatar>
-          </div>
-        </NextLink>
+          </NextLink>
+        </div>
         <div className="w-full">
           <CardHeader className="flex flex-row">
             <NextLink
