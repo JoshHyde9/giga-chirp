@@ -71,7 +71,7 @@ export const userRouter = new Elysia({ prefix: "/users" })
                   username: true,
                   imageUrl: true,
                   name: true,
-                }
+                },
               },
               _count: {
                 select: { likes: true, replies: true },
@@ -79,9 +79,9 @@ export const userRouter = new Elysia({ prefix: "/users" })
               likes: {
                 select: {
                   userId: true,
-                }
-              }
-            }
+                },
+              },
+            },
           },
           _count: {
             select: {
@@ -108,6 +108,13 @@ export const userRouter = new Elysia({ prefix: "/users" })
       }),
     }
   )
+  .get("/allUsers", async () => {
+    return await db.user.findMany({
+      select: {
+        username: true,
+      },
+    });
+  })
   .use(useAuth)
   .get("/me", async ({ session }) => {
     return session;
