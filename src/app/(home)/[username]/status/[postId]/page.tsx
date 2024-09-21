@@ -134,7 +134,7 @@ export default async function Page({
               isLiked={
                !!reply.likes.find((reply) => reply.userId === session?.user.id)
               }
-              className="block border-b last-of-type:border-b pt-2"
+              className="block border-b pt-2 last-of-type:border-b hover:cursor-pointer"
             />
           ))}
       </article>
