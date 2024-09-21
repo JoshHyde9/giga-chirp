@@ -1,4 +1,4 @@
-import NextAuth, { AuthError, DefaultSession } from "next-auth";
+import NextAuth, { AuthError, DefaultSession, User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { verify } from "argon2";
@@ -51,7 +51,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             image_url: user.imageUrl,
             name: user.name,
             username: user.username,
-          };
+          } as User;
+          
         } catch (error) {
           console.log(error);
 
