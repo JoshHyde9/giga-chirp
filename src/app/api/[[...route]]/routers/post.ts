@@ -1,3 +1,5 @@
+import type { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+
 import { Elysia, t } from "elysia";
 
 import { db } from "@/server/db";
@@ -90,7 +92,7 @@ export const postRouter = new Elysia({ prefix: "/posts" })
         data: {
           content: body.content,
           authorId: session.user.id,
-          mediaUrl: body.mediaUrl
+          mediaUrl: body.mediaUrl,
         },
       });
 
@@ -100,6 +102,28 @@ export const postRouter = new Elysia({ prefix: "/posts" })
       body: t.Object({
         content: t.String(),
         mediaUrl: t.Optional(t.String()),
+      }),
+    }
+  )
+  .post(
+    "/delete",
+    async ({ body, session, error }) => {
+      await db.post.delete({
+        where: {
+          id: body.postId,
+          authorId: session.user.id,
+        },
+      }).catch((e: PrismaClientKnownRequestError) => {
+        if (e.code === "P2025") {
+          throw error("Unauthorized", "Unauthorised.");
+        }
+      });
+
+      return { success: true };
+    },
+    {
+      body: t.Object({
+        postId: t.String(),
       }),
     }
   );

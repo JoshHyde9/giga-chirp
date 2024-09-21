@@ -2,7 +2,7 @@
 
 import type { Session } from "next-auth";
 
-import { Ellipsis, Pencil, Trash2, UserPlus } from "lucide-react";
+import { Ellipsis, Pencil, UserPlus } from "lucide-react";
 
 import {
   Popover,
@@ -11,14 +11,18 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 
+import { DeletePost } from "@/components/post/delete-post";
+
 type PostExtrasProps = {
   session: Session | null;
   authorUsername: string;
+  postId: string;
 };
 
 export const PostExtras: React.FC<PostExtrasProps> = ({
   session,
   authorUsername,
+  postId,
 }) => {
   return (
     <Popover>
@@ -47,13 +51,7 @@ export const PostExtras: React.FC<PostExtrasProps> = ({
 
         {session?.user.username === authorUsername && (
           <>
-            <Button
-              className="flex items-center justify-start gap-x-1 py-2 px-4 w-full text-red-500 hover:text-red-500"
-              variant="ghost"
-            >
-              <Trash2 />
-              <span className="font-semibold">Delete post</span>
-            </Button>
+            <DeletePost postId={postId} />
 
             <Button
               variant="ghost"

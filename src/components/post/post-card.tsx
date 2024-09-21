@@ -79,6 +79,7 @@ export const PostCard: React.FC<PostCardProps> = ({
               <PostExtras
                 session={session}
                 authorUsername={post.author.username}
+                postId={post.id}
               />
             )}
           </CardHeader>
