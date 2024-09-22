@@ -89,6 +89,7 @@ export const PostCard: React.FC<PostCardProps> = ({
               <SharePopover
                 authorUsername={post.author.username}
                 postId={post.id}
+                icon="share"
               />
           </CardFooter>
         </div>

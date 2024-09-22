@@ -73,10 +73,7 @@ export default async function Page({
               @{post.author.username}
             </span>
           </div>
-          {/* TODO: turn button into popover */}
-          <Button variant="ghost" className="ml-auto">
-            <Ellipsis />
-          </Button>
+          <SharePopover authorUsername={post.author.username} postId={post.id} icon="ellipsis" />
         </div>
 
         <div className="my-4 px-4">
@@ -111,6 +108,7 @@ export default async function Page({
           <SharePopover
             authorUsername={post.author.username}
             postId={post.id}
+            icon="share"
           />
         </div>
 
