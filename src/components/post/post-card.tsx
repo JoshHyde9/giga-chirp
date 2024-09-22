@@ -86,12 +86,10 @@ export const PostCard: React.FC<PostCardProps> = ({
               postId={post.id}
               likeCount={post._count.likes}
             />
-            <div>
               <SharePopover
                 authorUsername={post.author.username}
                 postId={post.id}
               />
-            </div>
           </CardFooter>
         </div>
       </Card>
