@@ -1,9 +1,10 @@
 import type { PostWithAuthor } from "@/lib/types";
+
 import { notFound } from "next/navigation";
 import NextLink from "next/link";
 
 import Image from "next/image";
-import { ArrowLeft, Ellipsis, MessageCircle } from "lucide-react";
+import { ArrowLeft, MessageCircle } from "lucide-react";
 import dayjs from "dayjs";
 
 import { auth } from "@/auth";
@@ -13,7 +14,6 @@ import { PostCard } from "@/components/post/post-card";
 import { CreateReply } from "@/components/post/create-reply";
 import { SharePopover } from "@/components/post/share-popover";
 import { LikePost } from "@/components/post/like-post";
-
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -47,7 +47,7 @@ export default async function Page({
   }
 
   const post: PostWithAuthor & { replies: PostWithAuthor[] } = data;
-  
+
   return (
     <main className="w-full">
       <nav className="py-4 mb-2 sticky top-0 backdrop-blur-sm z-10">
@@ -73,23 +73,27 @@ export default async function Page({
               @{post.author.username}
             </span>
           </div>
-          <SharePopover authorUsername={post.author.username} postId={post.id} icon="ellipsis" />
+          <SharePopover
+            authorUsername={post.author.username}
+            postId={post.id}
+            icon="ellipsis"
+          />
         </div>
 
         <div className="my-4 px-4">
           <p className="mb-4">{post.content}</p>
 
           {post.mediaUrl && (
-              <div className="flex justify-center relative h-[516px] my-2">
-                <Image
-                  src={post.mediaUrl}
-                  alt="media"
-                  fill
-                  sizes="24rem"
-                  className="w-full h-full rounded-lg"
-                />
-              </div>
-            )}
+            <div className="flex justify-center relative h-[516px] my-2">
+              <Image
+                src={post.mediaUrl}
+                alt="media"
+                fill
+                sizes="24rem"
+                className="w-full h-full rounded-lg"
+              />
+            </div>
+          )}
 
           <time
             dateTime={post.createdAt}
@@ -104,7 +108,13 @@ export default async function Page({
             <MessageCircle className="size-4" />
             <span>{post._count.replies}</span>
           </div>
-         <LikePost isLiked={!!post.likes.find((like) => like.userId === session?.user.id)} likeCount={post._count.likes} postId={post.id} />
+          <LikePost
+            isLiked={
+              !!post.likes.find((like) => like.userId === session?.user.id)
+            }
+            likeCount={post._count.likes}
+            postId={post.id}
+          />
           <SharePopover
             authorUsername={post.author.username}
             postId={post.id}
@@ -130,7 +140,7 @@ export default async function Page({
               post={reply}
               session={session}
               isLiked={
-               !!reply.likes.find((reply) => reply.userId === session?.user.id)
+                !!reply.likes.find((reply) => reply.userId === session?.user.id)
               }
               className="block border-b pt-2 last-of-type:border-b hover:cursor-pointer"
             />
