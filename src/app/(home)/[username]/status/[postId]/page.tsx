@@ -67,7 +67,7 @@ export default async function Page({
             <AvatarImage src={post.author.imageUrl} />
             <AvatarFallback>{post.author.username[0]}</AvatarFallback>
           </Avatar>
-          <div className="flex flex-col leading-tight">
+          <div className="flex flex-col leading-tight pl-2">
             <span className="font-bold">{post.author.name}</span>
             <span className="text-muted-foreground text-sm">
               @{post.author.username}

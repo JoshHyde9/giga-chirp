@@ -7,8 +7,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { default as NextLink } from "next/link";
 
-import { cn } from "@/lib/utils";
-
 import {
   Card,
   CardContent,
@@ -42,7 +40,7 @@ export const PostCard: React.FC<PostCardProps> = ({
       className={className}
       onClick={() => router.push(`/${post.author.username}/status/${post.id}`)}
     >
-      <Card className={cn("flex w-full py-2 px-4 shadow-none rounded-none")}>
+      <Card className="flex w-full py-2 px-4 shadow-none rounded-none">
         <NextLink
           href={`/${post.author.username}`}
           onClick={(e) => e.stopPropagation()}
