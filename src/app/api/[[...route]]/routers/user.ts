@@ -71,6 +71,7 @@ export const userRouter = new Elysia({ prefix: "/users" })
                   username: true,
                   imageUrl: true,
                   name: true,
+                  bio: true,
                 },
               },
               _count: {

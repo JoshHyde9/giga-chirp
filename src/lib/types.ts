@@ -13,5 +13,6 @@ export type PostWithAuthor = {
     username: string;
     imageUrl: string;
     name: string;
+    bio?: string;
   };
 };

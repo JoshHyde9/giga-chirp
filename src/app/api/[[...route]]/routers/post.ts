@@ -22,7 +22,7 @@ export const postRouter = new Elysia({ prefix: "/posts" })
           },
         },
         _count: { select: { likes: true, replies: true } },
-        author: { select: { username: true, imageUrl: true, name: true } },
+        author: { select: { username: true, imageUrl: true, name: true, bio: true } },
       },
       orderBy: { createdAt: "desc" },
     });
@@ -43,6 +43,7 @@ export const postRouter = new Elysia({ prefix: "/posts" })
               username: true,
               imageUrl: true,
               name: true,
+              bio: true,
             },
           },
           _count: {
@@ -56,7 +57,7 @@ export const postRouter = new Elysia({ prefix: "/posts" })
           replies: {
             include: {
               author: {
-                select: { name: true, username: true, imageUrl: true },
+                select: { name: true, username: true, imageUrl: true, bio: true },
               },
               likes: {
                 select: {
