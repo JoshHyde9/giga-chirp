@@ -36,20 +36,29 @@ export const PostAuthorCard: React.FC<PostAuthorCardProps> = ({ post }) => {
           </CardDescription>
         </NextLink>
       </HoverCardTrigger>
-      <HoverCardContent className="rounded-lg">
+      <HoverCardContent className="rounded-lg hover:cursor-default">
         <div className="flex justify-between">
-          <Avatar className="size-16">
-            <AvatarImage src={post.author.imageUrl} />
-            <AvatarFallback>{post.author.username[0]}</AvatarFallback>
-          </Avatar>
+          <NextLink href={`/${post.author.username}`}>
+            <Avatar className="size-16">
+              <AvatarImage src={post.author.imageUrl} />
+              <AvatarFallback>{post.author.username[0]}</AvatarFallback>
+            </Avatar>
+          </NextLink>
           <Button>Follow</Button>
         </div>
 
         <div className="my-2">
-          <h3 className="font-semibold">{post.author.name}</h3>
-          <span className="text-muted-foreground text-sm">
-            @{post.author.username}
-          </span>
+          <NextLink
+            href={`/${post.author.username}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="font-semibold hover:underline">
+              {post.author.name}
+            </h3>
+            <span className="text-muted-foreground text-sm">
+              @{post.author.username}
+            </span>
+          </NextLink>
         </div>
 
         <p>{post.author.bio}</p>
