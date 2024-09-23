@@ -1,16 +1,18 @@
 "use client";
 
+import type { PostWithAuthor } from "@/lib/types";
+
+import { UserPlus } from "lucide-react";
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
 
 import { api } from "@/server/treaty";
+
 import { revalidatePage } from "@/lib/revalidatePath";
 import { followUserSchema } from "@/lib/schema";
+import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
-import { UserPlus } from "lucide-react";
-import { cn } from "@/lib/utils";
-import type { PostWithAuthor } from "@/lib/types";
 
 type DefaultProps = {
   isFollowing: boolean;
