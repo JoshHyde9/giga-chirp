@@ -42,7 +42,8 @@ export const PostExtras: React.FC<PostExtrasProps> = ({
         {session?.user.username !== post.author.username && (
           <FollowUserButton
             isPopover
-            post={post}
+           authorId={post.author.id}
+           authorUsername={post.author.username}
             isFollowing={
               post.author.followers &&
               !!post.author.followers.find(

@@ -1,4 +1,5 @@
 import type { PostWithAuthor } from "@/lib/types";
+
 import { notFound } from "next/navigation";
 import NextLink from "next/link";
 import dayjs from "dayjs";
@@ -9,6 +10,7 @@ import { auth } from "@/auth";
 import { api } from "@/server/treaty";
 
 import { PostCard } from "@/components/post/post-card";
+import { FollowUserButton } from "@/components/post/follow-user-button";
 
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -28,6 +30,7 @@ export default async function Page({
 }) {
   const session = await auth();
 
+  // TODO: Fix types
   const { data: user, error } = await api.users
     .user({ username: params.username })
     .get();
@@ -62,14 +65,31 @@ export default async function Page({
           </Avatar>
         </div>
 
-        <h2 className="text-2xl font-bold">{user.name}</h2>
-        <p className="text-muted-foreground mb-2">@{user.username}</p>
+        <div>
+          <div className="flex w-full justify-end">
+            {session && session.user.id !== user.id && (
+              <FollowUserButton
+                icon
+                authorId={user.id}
+                isFollowing={
+                  user.followers &&
+                  !!user.followers.find(
+                    (follower: { followingId: string }) =>
+                      follower.followingId === session?.user.id
+                  )
+                }
+              />
+            )}
+          </div>
+          <h2 className="text-2xl font-bold">{user.name}</h2>
+          <p className="text-muted-foreground mb-2">@{user.username}</p>
 
-        {user.bio && <p className="py-2">{user.bio}</p>}
+          {user.bio && <p className="py-2">{user.bio}</p>}
 
-        <div className="flex items-center gap-x-1 text-muted-foreground ">
-          <Calendar className="size-4" /> Joined{" "}
-          <span>{dayjs(user.createdAt).format("MMMM YYYY")}</span>
+          <div className="flex items-center gap-x-1 text-muted-foreground ">
+            <Calendar className="size-4" /> Joined{" "}
+            <span>{dayjs(user.createdAt).format("MMMM YYYY")}</span>
+          </div>
         </div>
       </section>
 

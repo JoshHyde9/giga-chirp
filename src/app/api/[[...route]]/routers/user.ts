@@ -61,6 +61,11 @@ export const userRouter = new Elysia({ prefix: "/users" })
           username: params.username,
         },
         select: {
+          followers: {
+            select: {
+              followingId: true,
+            }
+          },
           posts: {
             where: {
               parentId: null,
@@ -89,6 +94,7 @@ export const userRouter = new Elysia({ prefix: "/users" })
               posts: { where: { parentId: null } },
             },
           },
+          id: true,
           bio: true,
           imageUrl: true,
           name: true,
