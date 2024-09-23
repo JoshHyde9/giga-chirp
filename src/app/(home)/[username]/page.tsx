@@ -86,9 +86,20 @@ export default async function Page({
 
           {user.bio && <p className="py-2">{user.bio}</p>}
 
-          <div className="flex items-center gap-x-1 text-muted-foreground ">
+          <div className="flex items-center gap-x-1 text-muted-foreground">
             <Calendar className="size-4" /> Joined{" "}
             <span>{dayjs(user.createdAt).format("MMMM YYYY")}</span>
+          </div>
+
+          <div className="flex flex-row gap-x-4 mt-2">
+            <div className="flex gap-x-1">
+              <span className="font-semibold">{user._count.following}</span>
+              <span className="text-muted-foreground">Following</span>
+            </div>
+            <div className="flex gap-x-1">
+              <span className="font-semibold">{user._count.followers}</span>
+              <span className="text-muted-foreground">{user._count.followers > 1 ? "Followers" : user._count.followers <= 0 ? "Followers" : "Follower"}</span>
+            </div>
           </div>
         </div>
       </section>

@@ -64,7 +64,7 @@ export const userRouter = new Elysia({ prefix: "/users" })
           followers: {
             select: {
               followingId: true,
-            }
+            },
           },
           posts: {
             where: {
@@ -91,6 +91,8 @@ export const userRouter = new Elysia({ prefix: "/users" })
           },
           _count: {
             select: {
+              followers: true,
+              following: true,
               posts: { where: { parentId: null } },
             },
           },
