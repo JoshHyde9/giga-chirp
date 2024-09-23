@@ -1,22 +1,27 @@
 import type { PostWithAuthor } from "@/lib/types";
+import type { Session } from "next-auth";
 
 import dayjs from "dayjs";
 import { default as NextLink } from "next/link";
 
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { CardTitle, CardDescription } from "@/components/ui/card";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { FollowUserButton } from "@/components/post/follow-user-button";
 
 type PostAuthorCardProps = {
   post: PostWithAuthor;
+  session: Session | null;
 };
 
-export const PostAuthorCard: React.FC<PostAuthorCardProps> = ({ post }) => {
+export const PostAuthorCard: React.FC<PostAuthorCardProps> = ({
+  post,
+  session,
+}) => {
   return (
     <HoverCard>
       <HoverCardTrigger
@@ -44,7 +49,17 @@ export const PostAuthorCard: React.FC<PostAuthorCardProps> = ({ post }) => {
               <AvatarFallback>{post.author.username[0]}</AvatarFallback>
             </Avatar>
           </NextLink>
-          <Button>Follow</Button>
+          {session && session?.user.id !== post.author.id && (
+            <FollowUserButton
+              post={post}
+              isFollowing={
+                post.author.followers &&
+                !!post.author.followers.find(
+                  (follower) => follower.followingId === session?.user.id
+                )
+              }
+            />
+          )}
         </div>
 
         <div className="my-2">

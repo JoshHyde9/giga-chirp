@@ -1,8 +1,9 @@
 "use client";
 
 import type { Session } from "next-auth";
+import type { PostWithAuthor } from "@/lib/types";
 
-import { Ellipsis, Pencil, UserPlus } from "lucide-react";
+import { Ellipsis, Pencil } from "lucide-react";
 
 import {
   Popover,
@@ -12,17 +13,16 @@ import {
 import { Button } from "@/components/ui/button";
 
 import { DeletePost } from "@/components/post/delete-post";
+import { FollowUserButton } from "./follow-user-button";
 
 type PostExtrasProps = {
   session: Session | null;
-  authorUsername: string;
-  postId: string;
+ post: PostWithAuthor;
 };
 
 export const PostExtras: React.FC<PostExtrasProps> = ({
   session,
-  authorUsername,
-  postId,
+  post
 }) => {
   return (
     <Popover>
@@ -39,19 +39,22 @@ export const PostExtras: React.FC<PostExtrasProps> = ({
         className="cursor-pointer p-2"
         onClick={(e) => e.stopPropagation()}
       >
-        {session?.user.username !== authorUsername && (
-          <Button
-            className="flex items-center justify-start gap-x-1 py-2 px-4 w-full"
-            variant="ghost"
-          >
-            <UserPlus />
-            <span className="font-semibold">Follow @{authorUsername}</span>
-          </Button>
+        {session?.user.username !== post.author.username && (
+          <FollowUserButton
+            isPopover
+            post={post}
+            isFollowing={
+              post.author.followers &&
+              !!post.author.followers.find(
+                (follower) => follower.followingId === session?.user.id
+              )
+            }
+          />
         )}
 
-        {session?.user.username === authorUsername && (
+        {session?.user.username === post.author.username && (
           <>
-            <DeletePost postId={postId} />
+            <DeletePost postId={post.id} />
 
             <Button
               variant="ghost"

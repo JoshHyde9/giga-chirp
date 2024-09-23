@@ -10,9 +10,13 @@ export type PostWithAuthor = {
     replies: number;
   };
   author: {
+    id: string;
     username: string;
     imageUrl: string;
     name: string;
     bio?: string;
+    followers: {
+      followingId: string;
+    }[];
   };
 };

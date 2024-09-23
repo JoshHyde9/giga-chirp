@@ -38,4 +38,8 @@ export const createReplySchema = createPostSchema.extend({
 
 export const likePostSchema = z.object({
   postId: z.string().cuid().min(1, "Required")
-})
+});
+
+export const followUserSchema = z.object({
+  authorId: z.string().cuid().min(1, "Required")
+});

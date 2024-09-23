@@ -52,13 +52,12 @@ export const PostCard: React.FC<PostCardProps> = ({
         </NextLink>
         <div className="w-full">
           <CardHeader className="flex flex-row">
-          <PostAuthorCard post={post} />
+          <PostAuthorCard post={post} session={session} />
 
             {session && (
               <PostExtras
                 session={session}
-                authorUsername={post.author.username}
-                postId={post.id}
+                post={post}
               />
             )}
           </CardHeader>

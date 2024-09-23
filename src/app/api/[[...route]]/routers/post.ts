@@ -22,7 +22,20 @@ export const postRouter = new Elysia({ prefix: "/posts" })
           },
         },
         _count: { select: { likes: true, replies: true } },
-        author: { select: { username: true, imageUrl: true, name: true, bio: true } },
+        author: {
+          select: {
+            id: true,
+            username: true,
+            imageUrl: true,
+            name: true,
+            bio: true,
+            followers: {
+              select: {
+                followingId: true,
+              },
+            },
+          },
+        },
       },
       orderBy: { createdAt: "desc" },
     });
@@ -40,10 +53,16 @@ export const postRouter = new Elysia({ prefix: "/posts" })
         include: {
           author: {
             select: {
+              id: true,
               username: true,
               imageUrl: true,
               name: true,
               bio: true,
+              followers: {
+                select: {
+                  followingId: true,
+                },
+              },
             },
           },
           _count: {
@@ -57,7 +76,18 @@ export const postRouter = new Elysia({ prefix: "/posts" })
           replies: {
             include: {
               author: {
-                select: { name: true, username: true, imageUrl: true, bio: true },
+                select: {
+                  id: true,
+                  name: true,
+                  username: true,
+                  imageUrl: true,
+                  bio: true,
+                  followers: {
+                    select: {
+                      followingId: true,
+                    },
+                  },
+                },
               },
               likes: {
                 select: {
@@ -109,16 +139,18 @@ export const postRouter = new Elysia({ prefix: "/posts" })
   .post(
     "/delete",
     async ({ body, session, error }) => {
-      await db.post.delete({
-        where: {
-          id: body.postId,
-          authorId: session.user.id,
-        },
-      }).catch((e: PrismaClientKnownRequestError) => {
-        if (e.code === "P2025") {
-          throw error("Unauthorized", "Unauthorised.");
-        }
-      });
+      await db.post
+        .delete({
+          where: {
+            id: body.postId,
+            authorId: session.user.id,
+          },
+        })
+        .catch((e: PrismaClientKnownRequestError) => {
+          if (e.code === "P2025") {
+            throw error("Unauthorized", "Unauthorised.");
+          }
+        });
 
       return { success: true };
     },
