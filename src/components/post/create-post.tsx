@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -7,6 +8,7 @@ import { z } from "zod";
 import { Image as LucideImage } from "lucide-react";
 
 import { createPostSchema } from "@/lib/schema";
+import { revalidatePage } from "@/lib/revalidatePath";
 
 import { api } from "@/server/treaty";
 
@@ -21,21 +23,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { UploadDropzone } from "@/utils/uploadthing";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
-import { FileUpload } from "../file-upload";
-import { useState } from "react";
-import { Input } from "../ui/input";
-import Image from "next/image";
-import { revalidatePage } from "@/lib/revalidatePath";
+} from "@/components/ui/dialog";
+import { FileUpload } from "@/components/file-upload";
 
 type CreatePostProps = {
   imageUrl: string;
@@ -109,7 +105,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({
             {form.getValues("mediaUrl") && (
               <div className="relative h-[516px]">
                 <Image
-                // @ts-expect-error react-hook-form does not like optional fields
+                  // @ts-expect-error react-hook-form does not like optional fields
                   src={form.getValues("mediaUrl")}
                   fill
                   className="w-full h-full"

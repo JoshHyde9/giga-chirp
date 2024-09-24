@@ -74,6 +74,7 @@ export const userRouter = new Elysia().group("/users", (app) =>
               include: {
                 author: {
                   select: {
+                    id: true,
                     username: true,
                     imageUrl: true,
                     name: true,

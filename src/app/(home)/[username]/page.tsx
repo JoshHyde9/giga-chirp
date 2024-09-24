@@ -1,5 +1,3 @@
-import type { PostWithAuthor } from "@/lib/types";
-
 import { notFound } from "next/navigation";
 import NextLink from "next/link";
 import dayjs from "dayjs";
@@ -18,6 +16,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 export async function generateStaticParams() {
   const { data: users } = await api.users.allUsers.get();
 
+  if (!users) {
+    return notFound();
+  }
+
   return users.map((user: { username: string }) => ({
     username: user.username,
   }));
@@ -30,7 +32,6 @@ export default async function Page({
 }) {
   const session = await auth();
 
-  // TODO: Fix types
   const { data: user, error } = await api.users
     .user({ username: params.username })
     .get();
@@ -60,7 +61,7 @@ export default async function Page({
       <section className="ml-2 px-4 pb-4">
         <div className="py-2">
           <Avatar className="size-32">
-            <AvatarImage src={user.imageUrl} />
+            <AvatarImage src={user.imageUrl!} />
             <AvatarFallback>{user.username[0]}</AvatarFallback>
           </Avatar>
         </div>
@@ -74,8 +75,7 @@ export default async function Page({
                 isFollowing={
                   user.followers &&
                   !!user.followers.find(
-                    (follower: { followingId: string }) =>
-                      follower.followingId === session?.user.id
+                    (follower) => follower.followingId === session?.user.id
                   )
                 }
               />
@@ -112,7 +112,7 @@ export default async function Page({
 
       <article>
         {user.posts &&
-          user.posts.map((post: PostWithAuthor) => (
+          user.posts.map((post) => (
             <PostCard
               key={post.id}
               post={post}

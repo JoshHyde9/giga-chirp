@@ -46,7 +46,7 @@ export const PostCard: React.FC<PostCardProps> = ({
           onClick={(e) => e.stopPropagation()}
         >
           <Avatar className="size-10">
-            <AvatarImage src={post.author.imageUrl} />
+            <AvatarImage src={post.author.imageUrl!} />
             <AvatarFallback>{post.author.username[0]}</AvatarFallback>
           </Avatar>
         </NextLink>

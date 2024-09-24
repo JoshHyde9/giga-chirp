@@ -25,7 +25,11 @@ export const dynamicParams = true;
 export async function generateStaticParams() {
   const { data: posts } = await api.posts.all.get();
 
-  return posts.map((post: PostWithAuthor) => ({
+  if (!posts) {
+    return notFound();
+  }
+
+  return posts.map((post) => ({
     postId: post.id,
     username: post.author.username,
   }));
@@ -38,15 +42,13 @@ export default async function Page({
 }) {
   const session = await auth();
 
-  const { data, error } = await api.posts
+  const { data: post, error } = await api.posts
     .byUsernameAndId({ username: params.username })({ postId: params.postId })
     .get();
 
   if (error) {
     return notFound();
   }
-
-  const post: PostWithAuthor & { replies: PostWithAuthor[] } = data;
 
   return (
     <main className="w-full">
@@ -64,7 +66,7 @@ export default async function Page({
       <article>
         <div className="flex gap-x-1 px-4">
           <Avatar>
-            <AvatarImage src={post.author.imageUrl} />
+            <AvatarImage src={post.author.imageUrl!} />
             <AvatarFallback>{post.author.username[0]}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col leading-tight pl-2">
@@ -96,7 +98,7 @@ export default async function Page({
           )}
 
           <time
-            dateTime={post.createdAt}
+            dateTime={post.createdAt.toString()}
             className="text-muted-foreground text-sm"
           >
             {dayjs(post.createdAt).format("h:mm A · MMM D, YYYY")}

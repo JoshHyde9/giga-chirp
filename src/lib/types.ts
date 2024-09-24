@@ -2,8 +2,8 @@
 export type PostWithAuthor = {
   id: string;
   content: string;
-  createdAt: string;
-  mediaUrl?: string;
+  createdAt: Date;
+  mediaUrl: string | null;
   likes: { userId: string }[];
   _count: {
     likes: number;
@@ -12,10 +12,10 @@ export type PostWithAuthor = {
   author: {
     id: string;
     username: string;
-    imageUrl: string;
+    imageUrl: string | null;
     name: string;
-    bio?: string;
-    followers: {
+    bio: string | null;
+    followers?: {
       followingId: string;
     }[];
   };
