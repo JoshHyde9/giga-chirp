@@ -3,7 +3,7 @@ import { Elysia, t } from "elysia";
 import { db } from "@/server/db";
 import { useAuth } from "../middleware/auth";
 
-export const likeRouter = new Elysia({ prefix: "/likes" }).use(useAuth).post(
+export const likeRouter = new Elysia().group("/likes", (app) => app.use(useAuth).post(
   "/create",
   async ({ body, session }) => {
     // Check if logged in user has already liked the post
@@ -36,4 +36,4 @@ export const likeRouter = new Elysia({ prefix: "/likes" }).use(useAuth).post(
       postId: t.String(),
     }),
   }
-);
+));
