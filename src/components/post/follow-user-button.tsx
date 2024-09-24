@@ -22,21 +22,20 @@ import {
 type DefaultProps = {
   isFollowing: boolean;
   authorId: string;
+  variant: "popover" | "icon" | "button";
 };
 
 type ConditionalProps =
   | {
-      isPopover?: true;
-      authorUsername?: string;
-      icon?: never;
+      variant: "popover";
+      authorUsername: string;
     }
   | {
-      isPopover?: never;
       authorUsername?: never;
-      icon?: never;
+      variant: "button";
     }
   | {
-      icon?: true;
+      variant: "icon";
       isPopover?: never;
       authorUsername?: never;
     };
@@ -44,11 +43,10 @@ type ConditionalProps =
 type FollowUserButtonProps = DefaultProps & ConditionalProps;
 
 export const FollowUserButton: React.FC<FollowUserButtonProps> = ({
-  isPopover,
+  variant,
   isFollowing,
   authorId,
   authorUsername,
-  icon,
 }) => {
   const handleFollow = async (values: z.infer<typeof followUserSchema>) => {
     const { data, error } = await api.follow.create.post(values);
@@ -75,7 +73,7 @@ export const FollowUserButton: React.FC<FollowUserButtonProps> = ({
 
   return (
     <>
-      {icon ? (
+      {variant === "icon" ? (
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -98,16 +96,16 @@ export const FollowUserButton: React.FC<FollowUserButtonProps> = ({
       ) : (
         <Button
           className={cn(
-            isPopover &&
+            variant === "popover" &&
               "flex items-center justify-start gap-x-1 py-2 px-4 w-full"
           )}
-          variant={isPopover ? "ghost" : "default"}
+          variant={variant === "popover" ? "ghost" : "default"}
           onClick={(e) => {
             e.stopPropagation();
             onSubmit({ authorId: authorId });
           }}
         >
-          {isPopover ? (
+          {variant === "popover" ? (
             <>
               <UserPlus />
               <span className="font-semibold">

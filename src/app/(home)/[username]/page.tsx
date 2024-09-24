@@ -69,7 +69,7 @@ export default async function Page({
           <div className="flex w-full justify-end">
             {session && session.user.id !== user.id && (
               <FollowUserButton
-                icon
+                variant="icon"
                 authorId={user.id}
                 isFollowing={
                   user.followers &&
@@ -98,7 +98,13 @@ export default async function Page({
             </div>
             <div className="flex gap-x-1">
               <span className="font-semibold">{user._count.followers}</span>
-              <span className="text-muted-foreground">{user._count.followers > 1 ? "Followers" : user._count.followers <= 0 ? "Followers" : "Follower"}</span>
+              <span className="text-muted-foreground">
+                {user._count.followers > 1
+                  ? "Followers"
+                  : user._count.followers <= 0
+                  ? "Followers"
+                  : "Follower"}
+              </span>
             </div>
           </div>
         </div>

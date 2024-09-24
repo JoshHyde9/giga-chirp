@@ -17,13 +17,10 @@ import { FollowUserButton } from "./follow-user-button";
 
 type PostExtrasProps = {
   session: Session | null;
- post: PostWithAuthor;
+  post: PostWithAuthor;
 };
 
-export const PostExtras: React.FC<PostExtrasProps> = ({
-  session,
-  post
-}) => {
+export const PostExtras: React.FC<PostExtrasProps> = ({ session, post }) => {
   return (
     <Popover>
       <PopoverTrigger
@@ -41,9 +38,9 @@ export const PostExtras: React.FC<PostExtrasProps> = ({
       >
         {session?.user.username !== post.author.username && (
           <FollowUserButton
-            isPopover
-           authorId={post.author.id}
-           authorUsername={post.author.username}
+            variant="popover"
+            authorId={post.author.id}
+            authorUsername={post.author.username}
             isFollowing={
               post.author.followers &&
               !!post.author.followers.find(

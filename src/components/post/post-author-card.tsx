@@ -51,6 +51,7 @@ export const PostAuthorCard: React.FC<PostAuthorCardProps> = ({
           </NextLink>
           {session && session?.user.id !== post.author.id && (
             <FollowUserButton
+              variant="button"
               authorId={post.author.id}
               isFollowing={
                 post.author.followers &&
