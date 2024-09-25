@@ -1,11 +1,15 @@
 "use client";
 
-import { editUserSchema } from "@/lib/schema";
-import { api } from "@/server/treaty";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+import  { editUserSchema } from "@/lib/schema";
+import { api } from "@/server/treaty";
+
+import { FileUpload } from "@/components/file-upload";
 import {
   Dialog,
   DialogContent,
@@ -24,9 +28,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { FileUpload } from "@/components/file-upload";
-import { revalidatePage } from "@/lib/revalidatePath";
-import { useState } from "react";
 
 type EditProfileDialog = {
   user: {
@@ -39,7 +40,7 @@ type EditProfileDialog = {
 };
 
 export const EditProfileDialog: React.FC<EditProfileDialog> = ({ user }) => {
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<z.infer<typeof editUserSchema>>({
     resolver: zodResolver(editUserSchema),
@@ -65,7 +66,6 @@ export const EditProfileDialog: React.FC<EditProfileDialog> = ({ user }) => {
       console.log(err);
     },
     onSuccess: () => {
-      revalidatePage();
       setIsOpen(false);
     },
   });
@@ -157,7 +157,6 @@ export const EditProfileDialog: React.FC<EditProfileDialog> = ({ user }) => {
                   Confirm
                 </Button>
               </div>
-
             </form>
           </Form>
         </DialogHeader>

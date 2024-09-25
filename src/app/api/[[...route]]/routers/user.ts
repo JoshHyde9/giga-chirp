@@ -138,8 +138,8 @@ export const userRouter = new Elysia().group("/users", (app) =>
           data: {
             name: body.name,
             bio: body.bio,
-            imageUrl: body.imageUrl,
-            bannerUrl: body.bannerUrl,
+            imageUrl: body.imageUrl || "https://cdn-icons-png.flaticon.com/512/10412/10412528.png",
+            bannerUrl: body.bannerUrl || "https://placehold.co/606x208.png",
           },
         });
 
