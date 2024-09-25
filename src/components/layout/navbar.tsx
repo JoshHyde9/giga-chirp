@@ -78,7 +78,7 @@ export const Navbar = async () => {
           </>
         )}
         {!session && (
-          <NavigationMenuItem className="w-full">
+          <NavigationMenuItem className="w-5/6">
             <Link href="/signin" legacyBehavior passHref>
               <NavigationMenuLink
                 className="w-full"
