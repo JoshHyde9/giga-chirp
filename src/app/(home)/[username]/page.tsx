@@ -68,7 +68,7 @@ export default async function Page({
         <div className="px-4 pb-4 -mt-10">
           <div className="flex justify-between w-full items-end mb-4">
             <Avatar className="size-32 -mt-4 border-black border-4">
-              <AvatarImage src={user.imageUrl!} />
+              <AvatarImage src={user.imageUrl} />
               <AvatarFallback>{user.username[0]}</AvatarFallback>
             </Avatar>
 

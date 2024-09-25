@@ -4,6 +4,7 @@ const nextConfig = {
     remotePatterns: [
       { hostname: "cdn-icons-png.flaticon.com" },
       { hostname: "utfs.io" },
+      { hostname: "placehold.co" },
     ],
   },
 };

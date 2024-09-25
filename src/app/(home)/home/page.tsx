@@ -34,7 +34,7 @@ export default async function Home() {
       )}
 
       {posts &&
-        posts.map((post: PostWithAuthor) => (
+        posts.map((post) => (
           <PostCard
             key={post.id}
             post={post}

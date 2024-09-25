@@ -12,7 +12,7 @@ export type PostWithAuthor = {
   author: {
     id: string;
     username: string;
-    imageUrl: string | null;
+    imageUrl: string;
     name: string;
     bio: string | null;
     followers?: {

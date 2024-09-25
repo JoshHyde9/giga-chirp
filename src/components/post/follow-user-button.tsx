@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/tooltip";
 
 type DefaultProps = {
-  isFollowing: boolean;
+  isFollowing: boolean | undefined;
   authorId: string;
   variant: "popover" | "icon" | "button";
 };

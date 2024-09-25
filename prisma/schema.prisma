@@ -13,16 +13,17 @@ datasource db {
 model User {
   id String @id @default(cuid())
 
-  email    String  @unique
-  username String  @unique
-  password String 
+  email    String @unique
+  username String @unique
+  password String
 
-  name     String
-  imageUrl String? @default("https://cdn-icons-png.flaticon.com/512/10412/10412528.png")
-  bio      String?
+  name      String
+  imageUrl  String  @default("https://cdn-icons-png.flaticon.com/512/10412/10412528.png")
+  bannerUrl String  @default("https://placehold.co/606x208")
+  bio       String?
 
-  posts Post[]
-  likes Like[]
+  posts     Post[]
+  likes     Like[]
   followers Follow[] @relation("UserFollowers")
   following Follow[] @relation("UserFollowing")
 
@@ -35,7 +36,7 @@ model User {
 model Post {
   id String @id @default(cuid())
 
-  content String
+  content  String
   mediaUrl String?
 
   author   User   @relation(fields: [authorId], references: [id])
@@ -66,10 +67,10 @@ model Like {
 model Follow {
   id String @id @default(cuid())
 
-  followerId String
+  followerId  String
   followingId String
 
-  user User @relation("UserFollowers", fields: [followerId], references: [id], onDelete: Cascade)
+  user      User @relation("UserFollowers", fields: [followerId], references: [id], onDelete: Cascade)
   following User @relation("UserFollowing", fields: [followingId], references: [id], onDelete: Cascade)
 
   @@index([followerId, followingId])
