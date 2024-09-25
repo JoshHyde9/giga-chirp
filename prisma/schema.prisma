@@ -19,7 +19,7 @@ model User {
 
   name      String
   imageUrl  String  @default("https://cdn-icons-png.flaticon.com/512/10412/10412528.png")
-  bannerUrl String  @default("https://placehold.co/606x208")
+  bannerUrl String  @default("https://placehold.co/606x208.png")
   bio       String?
 
   posts     Post[]

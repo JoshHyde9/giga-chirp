@@ -13,6 +13,7 @@ import { FollowUserButton } from "@/components/post/follow-user-button";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
+import { EditProfileDialog } from "@/components/user/edit-profile";
 
 export async function generateStaticParams() {
   const { data: users } = await api.users.allUsers.get();
@@ -62,7 +63,7 @@ export default async function Page({
       <section>
         {/* TODO: Users should be able to add banners to their profile */}
         <div className="h-52 relative">
-          <Image src={user.imageUrl!} fill alt="user profile image" />
+          <Image src={user.bannerUrl} fill alt="user profile image" />
         </div>
 
         <div className="px-4 pb-4 -mt-10">
@@ -88,7 +89,7 @@ export default async function Page({
             )}
 
             {session && session.user.id === user.id && (
-              <Button>Edit Profile</Button>
+              <EditProfileDialog user={user} />
             )}
           </div>
 

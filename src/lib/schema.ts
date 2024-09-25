@@ -43,3 +43,10 @@ export const likePostSchema = z.object({
 export const followUserSchema = z.object({
   authorId: z.string().cuid().min(1, "Required")
 });
+
+export const editUserSchema = z.object({
+  name: z.string(),
+  bio: z.string(),
+  imageUrl: z.string(),
+  bannerUrl: z.string(),
+})

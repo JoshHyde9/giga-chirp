@@ -101,6 +101,7 @@ export const userRouter = new Elysia().group("/users", (app) =>
             id: true,
             bio: true,
             imageUrl: true,
+            bannerUrl: true,
             name: true,
             username: true,
             createdAt: true,
@@ -127,6 +128,32 @@ export const userRouter = new Elysia().group("/users", (app) =>
       });
     })
     .use(useAuth)
+    .put(
+      "/edit",
+      async ({ body, session }) => {
+        await db.user.update({
+          where: {
+            id: session.user.id
+          },
+          data: {
+            name: body.name,
+            bio: body.bio,
+            imageUrl: body.imageUrl,
+            bannerUrl: body.bannerUrl,
+          },
+        });
+
+        return { success: true };
+      },
+      {
+        body: t.Object({
+          name: t.String(),
+          bio: t.String(),
+          imageUrl: t.String(),
+          bannerUrl: t.String(),
+        }),
+      }
+    )
     .get("/me", async ({ session }) => {
       return session;
     })

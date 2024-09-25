@@ -4,18 +4,36 @@ import { X } from "lucide-react";
 import Image from "next/image";
 
 import { UploadDropzone } from "@/utils/uploadthing";
+import { cn } from "@/lib/utils";
 
 type FileUploadProps = {
-  endpoint: "postUploader" | "userImage";
+  size?: "icon" | "small" | "large";
+  endpoint: "postUploader" | "userImage" | "userBannerImage";
   value: string;
   onChange: (...event: unknown[]) => void;
 };
 
-export const FileUpload = ({ endpoint, onChange, value }: FileUploadProps) => {
+export const FileUpload = ({
+  size,
+  endpoint,
+  onChange,
+  value,
+}: FileUploadProps) => {
   if (value) {
     return (
-      <div className="relative h-[516px]">
-        <Image fill src={value} alt="Upload" className="h-full rounded-md" />
+      <div
+        className={cn(
+          "relative",
+          size === "small" && "flex justify-center h-[258px]",
+          size === "icon" && "flex justify-center items-center h-48"
+        )}
+      >
+        <Image
+          fill
+          src={value}
+          alt="Upload"
+          className={cn("h-full rounded-md m-auto", size === "icon" && "!w-48")}
+        />
         <button className="h-4 w-4" onClick={() => onChange("")}>
           <X
             className="absolute -right-2 -top-2 rounded-full bg-rose-500 p-1 text-white shadow-sm"

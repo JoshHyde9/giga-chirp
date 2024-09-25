@@ -28,6 +28,15 @@ export const ourFileRouter = {
   userImage: f({
     image: { maxFileSize: "8MB" },
   }).onUploadComplete(async ({}) => {}),
+  userBannerImage: f({ image: { maxFileSize: "8MB" } })
+    .middleware(async () => await getSession())
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("Upload complete for userId:", metadata.userId);
+
+      console.log("file url", file.url);
+
+      return { uploadedBy: metadata.userId };
+    }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;
