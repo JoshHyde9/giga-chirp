@@ -56,7 +56,7 @@ export const Navbar = async () => {
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href="/profile" legacyBehavior passHref>
+              <Link href={`/${session.user.username}`} legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   <UserRound />
                   <span className="ml-2">Profile</span>
