@@ -18,7 +18,7 @@ export const Navbar = async () => {
 
   return (
     <NavigationMenu className="sticky top-0 h-screen">
-      <NavigationMenuList className="flex flex-col h-full w-full py-2 gap-y-2">
+      <NavigationMenuList className="flex flex-col h-full w-52 py-2 gap-y-2">
         <NavigationMenuItem className="ml-2">
           <Link href="/home" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -69,16 +69,22 @@ export const Navbar = async () => {
             </NavigationMenuItem>
 
             <NavigationMenuItem className="mt-auto">
-              <NavigationMenuLink className={navigationMenuTriggerStyle() + " w-full"}>
+              <NavigationMenuLink
+                className={navigationMenuTriggerStyle() + " w-full"}
+              >
                 <UserAvatar session={session} />
               </NavigationMenuLink>
             </NavigationMenuItem>
           </>
         )}
         {!session && (
-          <NavigationMenuItem className="">
+          <NavigationMenuItem className="w-full">
             <Link href="/signin" legacyBehavior passHref>
-              <Button className="w-full">Sign in</Button>
+              <NavigationMenuLink
+                className="w-full"
+              >
+               <Button className="w-full">Sign in</Button>
+              </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
         )}

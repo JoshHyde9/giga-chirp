@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import  { editUserSchema } from "@/lib/schema";
+import { editUserSchema } from "@/lib/schema";
 import { api } from "@/server/treaty";
 
 import { FileUpload } from "@/components/file-upload";
@@ -28,6 +28,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useSession } from "next-auth/react";
+import { revalidatePath } from "next/cache";
+import { revalidatePage } from "@/lib/revalidatePath";
 
 type EditProfileDialog = {
   user: {
@@ -40,6 +43,7 @@ type EditProfileDialog = {
 };
 
 export const EditProfileDialog: React.FC<EditProfileDialog> = ({ user }) => {
+  const { update } = useSession();
   const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<z.infer<typeof editUserSchema>>({
@@ -65,8 +69,10 @@ export const EditProfileDialog: React.FC<EditProfileDialog> = ({ user }) => {
     onError: (err) => {
       console.log(err);
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       setIsOpen(false);
+      await update({ user: { image_url: form.getValues("imageUrl") } });
+      revalidatePage();
     },
   });
 

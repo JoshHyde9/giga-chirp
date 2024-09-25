@@ -62,13 +62,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    jwt({ token, user }) {
+    jwt({ token, user, trigger, session }) {
       if (user) {
         // @ts-ignore yeet
         token.id = user.id;
         token.image_url = user.image_url;
         token.name = user.name;
         token.username = user.username;
+      }
+
+      if (trigger === "update" && session.user.image_url) {
+        token.image_url = session.user.image_url;
       }
 
       return token;
