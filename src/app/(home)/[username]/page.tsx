@@ -12,6 +12,7 @@ import { FollowUserButton } from "@/components/post/follow-user-button";
 
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Image from "next/image";
 
 export async function generateStaticParams() {
   const { data: users } = await api.users.allUsers.get();
@@ -58,29 +59,39 @@ export default async function Page({
         </div>
       </nav>
 
-      <section className="ml-2 px-4 pb-4">
-        <div className="py-2">
-          <Avatar className="size-32">
-            <AvatarImage src={user.imageUrl!} />
-            <AvatarFallback>{user.username[0]}</AvatarFallback>
-          </Avatar>
+      <section>
+        {/* TODO: Users should be able to add banners to their profile */}
+        <div className="h-52 relative">
+          <Image src={user.imageUrl!} fill alt="user profile image" />
         </div>
 
-        <div>
-          <div className="flex w-full justify-end">
+        <div className="px-4 pb-4 -mt-10">
+          <div className="flex justify-between w-full items-end mb-4">
+            <Avatar className="size-32 -mt-4 border-black border-4">
+              <AvatarImage src={user.imageUrl!} />
+              <AvatarFallback>{user.username[0]}</AvatarFallback>
+            </Avatar>
+
             {session && session.user.id !== user.id && (
-              <FollowUserButton
-                variant="icon"
-                authorId={user.id}
-                isFollowing={
-                  user.followers &&
-                  !!user.followers.find(
-                    (follower) => follower.followingId === session?.user.id
-                  )
-                }
-              />
+              <div className="flex w-full justify-end">
+                <FollowUserButton
+                  variant="icon"
+                  authorId={user.id}
+                  isFollowing={
+                    user.followers &&
+                    !!user.followers.find(
+                      (follower) => follower.followingId === session?.user.id
+                    )
+                  }
+                />
+              </div>
+            )}
+
+            {session && session.user.id === user.id && (
+              <Button>Edit Profile</Button>
             )}
           </div>
+
           <h2 className="text-2xl font-bold">{user.name}</h2>
           <p className="text-muted-foreground mb-2">@{user.username}</p>
 
