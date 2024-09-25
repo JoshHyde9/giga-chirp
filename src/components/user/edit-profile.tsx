@@ -5,9 +5,12 @@ import { useMutation } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useSession } from "next-auth/react";
+
+import { api } from "@/server/treaty";
 
 import { editUserSchema } from "@/lib/schema";
-import { api } from "@/server/treaty";
+import { revalidatePage } from "@/lib/revalidatePath";
 
 import { FileUpload } from "@/components/file-upload";
 import {
@@ -28,9 +31,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useSession } from "next-auth/react";
-import { revalidatePath } from "next/cache";
-import { revalidatePage } from "@/lib/revalidatePath";
 
 type EditProfileDialog = {
   user: {

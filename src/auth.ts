@@ -71,7 +71,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.username = user.username;
       }
 
-      if (trigger === "update" && session.user.image_url) {
+      if (trigger === "update" && session.user) {
         token.image_url = session.user.image_url;
       }
 
@@ -83,6 +83,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       // @ts-ignore yeet
       session.user.name = token.name;
       session.user.image_url = token.image_url;
+
       return session;
     },
   },
