@@ -39,9 +39,6 @@ export const PostCard: React.FC<PostCardProps> = ({
   session,
   className,
 }) => {  
-
-  console.log(post);
-  
   const router = useRouter();
   return (
     <section
