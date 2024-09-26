@@ -49,4 +49,8 @@ export const editUserSchema = z.object({
   bio: z.string(),
   imageUrl: z.string(),
   bannerUrl: z.string(),
+});
+
+export const createQuoteSchema = z.object({
+  content: z.string().min(1, "Required"),
 })

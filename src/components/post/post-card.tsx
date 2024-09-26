@@ -15,25 +15,33 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import { SharePopover } from "@/components/post/share-popover";
 import { LikePost } from "@/components/post/like-post";
+
+import { SharePopover } from "@/components/post/share-popover";
 import { ReplyDialog } from "@/components/post/reply-dialog";
 import { PostExtras } from "@/components/post/post-extras-popover";
 import { PostAuthorCard } from "@/components/post/post-author-card";
+
+import { RepostPopover } from "@/components/post/repost/repost-popover";
 
 type PostCardProps = {
   post: PostWithAuthor;
   className: string;
   isLiked: boolean;
+  hasLoggedInUserReposted: boolean;
   session: Session | null;
 };
 
 export const PostCard: React.FC<PostCardProps> = ({
   post,
   isLiked,
+  hasLoggedInUserReposted,
   session,
   className,
-}) => {
+}) => {  
+
+  console.log(post);
+  
   const router = useRouter();
   return (
     <section
@@ -78,6 +86,9 @@ export const PostCard: React.FC<PostCardProps> = ({
           </CardContent>
           <CardFooter className="flex gap-x-4 justify-between py-1">
             <ReplyDialog post={post} session={session} />
+
+            <RepostPopover isReposted={hasLoggedInUserReposted} post={post} />
+            
             <LikePost
               isLiked={isLiked}
               postId={post.id}

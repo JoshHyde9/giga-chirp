@@ -1,5 +1,3 @@
-import type { PostWithAuthor } from "@/lib/types";
-
 import { auth } from "@/auth";
 import { api } from "@/server/treaty";
 
@@ -38,9 +36,14 @@ export default async function Home() {
           <PostCard
             key={post.id}
             post={post}
-            isLiked={!!post.likes.find(
-              (like) => like.userId === session?.user.id
-            )}
+            isLiked={
+              !!post.likes.find((like) => like.userId === session?.user.id)
+            }
+            hasLoggedInUserReposted={
+              !!post.reposts.find(
+                (repost) => repost.userId === session?.user.id
+              )
+            }
             session={session}
             className="border-b last-of-type:border-b first-of-type:border-t hover:cursor-pointer"
           />

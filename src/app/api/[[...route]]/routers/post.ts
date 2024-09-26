@@ -22,7 +22,12 @@ export const postRouter = new Elysia().group("/posts", (app) =>
               userId: true,
             },
           },
-          _count: { select: { likes: true, replies: true } },
+          reposts: {
+            select: {
+              userId: true,
+            },
+          },
+          _count: { select: { likes: true, replies: true, reposts: true } },
           author: {
             select: {
               id: true,
@@ -67,12 +72,17 @@ export const postRouter = new Elysia().group("/posts", (app) =>
               },
             },
             _count: {
-              select: { likes: true, replies: true },
+              select: { likes: true, replies: true, reposts: true },
             },
             likes: {
               select: {
                 userId: true,
               },
+            },
+            reposts: {
+              select: {
+                userId: true,
+              }
             },
             replies: {
               include: {
@@ -88,15 +98,20 @@ export const postRouter = new Elysia().group("/posts", (app) =>
                         followingId: true,
                       },
                     },
-                  },
+                  }
                 },
                 likes: {
                   select: {
                     userId: true,
                   },
                 },
+                reposts: {
+                  select: {
+                    userId: true,
+                  }
+                },
                 _count: {
-                  select: { likes: true, replies: true },
+                  select: { likes: true, replies: true, reposts: true },
                 },
               },
             },

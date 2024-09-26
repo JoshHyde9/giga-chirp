@@ -1,5 +1,3 @@
-import type { PostWithAuthor } from "@/lib/types";
-
 import { notFound } from "next/navigation";
 import NextLink from "next/link";
 
@@ -14,6 +12,7 @@ import { PostCard } from "@/components/post/post-card";
 import { CreateReply } from "@/components/post/create-reply";
 import { SharePopover } from "@/components/post/share-popover";
 import { LikePost } from "@/components/post/like-post";
+import { RepostPopover } from "@/components/post/repost/repost-popover";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -110,6 +109,16 @@ export default async function Page({
             <MessageCircle className="size-4" />
             <span>{post._count.replies}</span>
           </div>
+
+          <RepostPopover
+            post={post}
+            isReposted={
+              !!post.reposts.find(
+                (repost) => repost.userId === session?.user.id
+              )
+            }
+          />
+
           <LikePost
             isLiked={
               !!post.likes.find((like) => like.userId === session?.user.id)
@@ -117,6 +126,7 @@ export default async function Page({
             likeCount={post._count.likes}
             postId={post.id}
           />
+
           <SharePopover
             authorUsername={post.author.username}
             postId={post.id}
@@ -141,6 +151,11 @@ export default async function Page({
               key={reply.id}
               post={reply}
               session={session}
+              hasLoggedInUserReposted={
+                !!reply.reposts.find(
+                  (repost) => repost.userId === session?.user.id
+                )
+              }
               isLiked={
                 !!reply.likes.find((reply) => reply.userId === session?.user.id)
               }

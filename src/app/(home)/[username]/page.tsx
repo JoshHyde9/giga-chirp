@@ -131,6 +131,11 @@ export default async function Page({
               isLiked={
                 !!post.likes.find((like) => like.userId === session?.user.id)
               }
+              hasLoggedInUserReposted={
+                !!post.reposts.find(
+                  (repost) => repost.userId === session?.user.id
+                )
+              }
               session={session}
               className="border-b last-of-type:border-b first-of-type:border-t hover:cursor-pointer"
             />

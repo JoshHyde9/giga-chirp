@@ -72,6 +72,11 @@ export const userRouter = new Elysia().group("/users", (app) =>
                 parentId: null,
               },
               include: {
+                reposts: {
+                  select: {
+                    userId: true,
+                  },
+                },
                 author: {
                   select: {
                     id: true,
@@ -82,7 +87,7 @@ export const userRouter = new Elysia().group("/users", (app) =>
                   },
                 },
                 _count: {
-                  select: { likes: true, replies: true },
+                  select: { likes: true, replies: true, reposts: true },
                 },
                 likes: {
                   select: {
@@ -133,12 +138,14 @@ export const userRouter = new Elysia().group("/users", (app) =>
       async ({ body, session }) => {
         await db.user.update({
           where: {
-            id: session.user.id
+            id: session.user.id,
           },
           data: {
             name: body.name,
             bio: body.bio,
-            imageUrl: body.imageUrl || "https://cdn-icons-png.flaticon.com/512/10412/10412528.png",
+            imageUrl:
+              body.imageUrl ||
+              "https://cdn-icons-png.flaticon.com/512/10412/10412528.png",
             bannerUrl: body.bannerUrl || "https://placehold.co/606x208.png",
           },
         });

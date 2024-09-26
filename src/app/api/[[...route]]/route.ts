@@ -5,6 +5,7 @@ import { postRouter } from "./routers/post";
 import { replyRouter } from "./routers/reply";
 import { likeRouter } from "./routers/like";
 import { followRouter } from "./routers/follow";
+import { repostRouter } from "./routers/repost";
 
 const app = new Elysia({ prefix: "/api" })
   .get("/hello", () => "Hello from Elysia")
@@ -13,6 +14,7 @@ const app = new Elysia({ prefix: "/api" })
   .use(replyRouter)
   .use(likeRouter)
   .use(followRouter)
+  .use(repostRouter)
 
 export type App = typeof app;
 
