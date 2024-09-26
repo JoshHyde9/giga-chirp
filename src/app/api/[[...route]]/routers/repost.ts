@@ -18,11 +18,16 @@ export const repostRouter = new Elysia().group("/repost", (app) =>
         return error("Bad Request", "You have already reposted this post");
       }
 
-      return await db.repost.create({
+      return await db.post.update({
+        where: {
+          id: body.postId,
+        },
         data: {
-          postId: body.postId,
-          userId: session.user.id,
-          content: body.content || null,
+          reposts: {
+            create: {
+              user: { connect: { id: session.user.id } },
+            },
+          },
         },
       });
     },
