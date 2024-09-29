@@ -34,7 +34,7 @@ export default async function Page({
 }) {
   const session = await auth();
 
-  const { data: user, error } = await api.users
+  const { data, error } = await api.users
     .user({ username: params.username })
     .get();
 
@@ -52,9 +52,9 @@ export default async function Page({
             </NextLink>
           </Button>
           <div className="flex flex-col ml-2">
-            <h2 className="text-2xl font-bold">{user.name}</h2>
+            <h2 className="text-2xl font-bold">{data.user.name}</h2>
             <p className="text-muted-foreground text-sm">
-              {user._count.posts} posts
+              {data.user._count.posts} posts
             </p>
           </div>
         </div>
@@ -63,24 +63,24 @@ export default async function Page({
       <section>
         {/* TODO: Users should be able to add banners to their profile */}
         <div className="h-52 relative">
-          <Image src={user.bannerUrl} fill alt="user profile image" />
+          <Image src={data.user.bannerUrl} fill alt="user profile image" />
         </div>
 
         <div className="px-4 pb-4 -mt-10">
           <div className="flex justify-between w-full items-end mb-4">
             <Avatar className="size-32 -mt-4 border-black border-4">
-              <AvatarImage src={user.imageUrl} />
-              <AvatarFallback>{user.username[0]}</AvatarFallback>
+              <AvatarImage src={data.user.imageUrl} />
+              <AvatarFallback>{data.user.username[0]}</AvatarFallback>
             </Avatar>
 
-            {session && session.user.id !== user.id && (
+            {session && session.user.id !== data.user.id && (
               <div className="flex w-full justify-end">
                 <FollowUserButton
                   variant="icon"
-                  authorId={user.id}
+                  authorId={data.user.id}
                   isFollowing={
-                    user.followers &&
-                    !!user.followers.find(
+                   data.user.followers &&
+                    !!data.user.followers.find(
                       (follower) => follower.followingId === session?.user.id
                     )
                   }
@@ -88,32 +88,32 @@ export default async function Page({
               </div>
             )}
 
-            {session && session.user.id === user.id && (
-              <EditProfileDialog user={user} />
+            {session && session.user.id === data.user.id && (
+              <EditProfileDialog user={data.user} />
             )}
           </div>
 
-          <h2 className="text-2xl font-bold">{user.name}</h2>
-          <p className="text-muted-foreground mb-2">@{user.username}</p>
+          <h2 className="text-2xl font-bold">{data.user.name}</h2>
+          <p className="text-muted-foreground mb-2">@{data.user.username}</p>
 
-          {user.bio && <p className="py-2">{user.bio}</p>}
+          {data.user.bio && <p className="py-2">{data.user.bio}</p>}
 
           <div className="flex items-center gap-x-1 text-muted-foreground">
             <Calendar className="size-4" /> Joined{" "}
-            <span>{dayjs(user.createdAt).format("MMMM YYYY")}</span>
+            <span>{dayjs(data.user.createdAt).format("MMMM YYYY")}</span>
           </div>
 
           <div className="flex flex-row gap-x-4 mt-2">
             <div className="flex gap-x-1">
-              <span className="font-semibold">{user._count.following}</span>
+              <span className="font-semibold">{data.user._count.following}</span>
               <span className="text-muted-foreground">Following</span>
             </div>
             <div className="flex gap-x-1">
-              <span className="font-semibold">{user._count.followers}</span>
+              <span className="font-semibold">{data.user._count.followers}</span>
               <span className="text-muted-foreground">
-                {user._count.followers > 1
+                {data.user._count.followers > 1
                   ? "Followers"
-                  : user._count.followers <= 0
+                  : data.user._count.followers <= 0
                   ? "Followers"
                   : "Follower"}
               </span>
@@ -123,8 +123,8 @@ export default async function Page({
       </section>
 
       <article>
-        {user.posts &&
-          user.posts.map((post) => (
+        {data.posts &&
+          data.posts.map((post) => (
             <PostCard
               key={post.id}
               post={post}

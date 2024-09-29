@@ -62,54 +62,22 @@ export const userRouter = new Elysia().group("/users", (app) =>
             username: params.username,
           },
           select: {
-            followers: {
-              select: {
-                followingId: true,
-              },
-            },
-            posts: {
-              where: {
-                parentId: null,
-              },
-              include: {
-                reposts: {
-                  select: {
-                    userId: true,
-                  },
-                },
-                author: {
-                  select: {
-                    id: true,
-                    username: true,
-                    imageUrl: true,
-                    name: true,
-                    bio: true,
-                  },
-                },
-                _count: {
-                  select: { likes: true, replies: true, reposts: true },
-                },
-                likes: {
-                  select: {
-                    userId: true,
-                  },
-                },
-              },
-            },
-            _count: {
-              select: {
-                followers: true,
-                following: true,
-                posts: { where: { parentId: null } },
-              },
-            },
             id: true,
-            bio: true,
-            imageUrl: true,
-            bannerUrl: true,
             name: true,
             username: true,
+            bio: true,
+            bannerUrl: true,
+            imageUrl: true,
             createdAt: true,
+            following: true,
+            followers: true,
+            _count: {
+              select: {
+                posts: true,
+                followers: true,
+                following: true,
+              },
+            },
           },
         });
 
@@ -117,7 +85,44 @@ export const userRouter = new Elysia().group("/users", (app) =>
           return error("Not Found", "User does not exist.");
         }
 
-        return user;
+        const posts = await db.post.findMany({
+          where: {
+            OR: [
+              {
+                author: { username: user.username },
+              },
+              {
+                reposts: {
+                  some: {
+                    user: {
+                      username: params.username,
+                    },
+                  },
+                },
+              },
+              {
+                likes: {
+                  some: {
+                    user: {
+                      username: params.username,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+          include: {
+            likes: true,
+            reposts: true,
+            author: true,
+            _count: { select: { likes: true, replies: true, reposts: true } },
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        });
+
+        return { user, posts };
       },
       {
         params: t.Object({
