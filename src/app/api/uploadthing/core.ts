@@ -40,3 +40,5 @@ export const ourFileRouter = {
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;
+
+export type Endpoints = keyof OurFileRouter;

@@ -1,5 +1,7 @@
 "use client";
 
+import type { Endpoints } from "@/app/api/uploadthing/core";
+
 import { X } from "lucide-react";
 import Image from "next/image";
 
@@ -8,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 type FileUploadProps = {
   size?: "icon" | "small" | "large";
-  endpoint: "postUploader" | "userImage" | "userBannerImage";
+  endpoint: Endpoints;
   value: string;
   onChange: (...event: unknown[]) => void;
 };
