@@ -24,6 +24,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { CreateReply } from "@/components/post/create-reply";
+import { cn } from "@/lib/utils";
 
 
 dayjs.extend(relativeTime);
@@ -52,6 +53,7 @@ export const ReplyDialog: React.FC<ReplyDialogProps> = ({ post, session }) => {
               e.nativeEvent.preventDefault();
               e.stopPropagation();
             }}
+            className="duration-300 rounded-2xl px-2 py-1 hover:bg-blue-200/20 hover:text-blue-500"
           >
             <div className="flex items-center text-sm gap-x-1 duration-300 hover:text-blue-500 hover:cursor-pointer">
               <MessageCircle className="size-4" />

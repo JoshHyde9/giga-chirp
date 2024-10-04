@@ -14,6 +14,7 @@ import {
 
 import { QuoteDialog } from "@/components/post/repost/quote-dialog";
 import { RepostButton } from "@/components/post/repost/repost-button";
+import { cn } from "@/lib/utils";
 
 type RepostPopoverProps = {
   isReposted: boolean;
@@ -28,18 +29,16 @@ export const RepostPopover: React.FC<RepostPopoverProps> = ({
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger
-        className="flex items-center text-sm gap-x-1"
+        className={cn("flex items-center justify-center text-sm gap-x-1 duration-300 hover:bg-green-200/20 rounded-2xl px-2 py-1 w-11 hover:text-green-600", isReposted && "text-green-600")}
         onClick={(e) => {
           e.stopPropagation();
           e.nativeEvent.preventDefault();
         }}
       >
         <Repeat2
-          className={`size-4 duration-300 hover:text-green-600 ${
-            isReposted ? "text-green-600" : ""
-          }`}
+          className="size-4"
         />
-        <span className={isReposted ? "text-green-600" : ""}>
+        <span>
           {post._count.reposts}
         </span>
       </PopoverTrigger>

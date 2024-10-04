@@ -27,14 +27,14 @@ export const SharePopover: React.FC<SharePopoverProps> = ({
   return (
     <Popover onOpenChange={setOpen} open={open}>
       <PopoverTrigger
-        className={cn("py-2", icon === "ellipsis" && "ml-auto")}
+        className={cn("py-2", icon === "share" && "hover:bg-blue-200/20 px-2 rounded-2xl duration-300 hover:text-blue-500", icon === "ellipsis" && "ml-auto")}
         onClick={(e) => {
           e.stopPropagation();
           e.nativeEvent.preventDefault();
         }}
       >
         {icon === "share" ? (
-          <Share className="size-4 duration-300 hover:text-blue-500 hover:cursor-pointer" />
+          <Share className="size-4 hover:cursor-pointer" />
         ) : (
           <div className="px-2 rounded-md duration-300 hover:bg-accent/50">
             <Ellipsis className="size-4" />

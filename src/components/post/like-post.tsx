@@ -48,7 +48,7 @@ export const LikePost: React.FC<LikePostProps> = ({
 
   return (
     <div
-      className="flex items-center text-sm gap-x-1 duration-300 hover:text-red-500 hover:cursor-pointer"
+      className="flex items-center justify-center text-sm gap-x-1 duration-300 hover:bg-red-200/20 px-2 py-1 w-11 rounded-2xl hover:text-red-500 hover:cursor-pointer"
       onClick={(e) => {
         e.preventDefault();
         e.nativeEvent.preventDefault();
